@@ -32,7 +32,6 @@ module Stream =
 module Websocket =
     open Stream
     open System
-    open System.Threading
     open System.Net.WebSockets
 
     /// **Description**
@@ -142,26 +141,29 @@ module ThreadSafeWebsocket =
         let sendAgent = MailboxProcessor<SendMessages>.Start(fun inbox ->
             let rec loop () = async {
                 let! message = inbox.Receive()
-                match message with
-                | Send (buffer, messageType, stream, replyChannel) ->
-                    do! Websocket.sendMessage buffer messageType stream webSocket
-                    replyChannel.Reply ()
-                | Close (status, message, replyChannel) ->
-                    do! Websocket.asyncClose status message webSocket
-                    replyChannel.Reply ()
-                | CloseOutput (status, message, replyChannel) ->
-                    do! Websocket.asyncCloseOutput status message webSocket
-                    replyChannel.Reply ()
-                return! loop ()
+                if webSocket |> Websocket.isWebsocketOpen then
+                    match message with
+                    | Send (buffer, messageType, stream, replyChannel) ->
+                        do! Websocket.sendMessage buffer messageType stream webSocket
+                        replyChannel.Reply ()
+                        return! loop ()
+                    | Close (status, message, replyChannel) ->
+                        do! Websocket.asyncClose status message webSocket
+                        replyChannel.Reply ()
+                    | CloseOutput (status, message, replyChannel) ->
+                        do! Websocket.asyncCloseOutput status message webSocket
+                        replyChannel.Reply ()
+
             }
             loop ()
         )
         let receiveAgent = MailboxProcessor<ReceiveMessage>.Start(fun inbox ->
             let rec loop () = async {
                 let! (buffer, messageType, stream, replyChannel) = inbox.Receive()
-                do! Websocket.receiveMessage buffer messageType stream webSocket
-                replyChannel.Reply ()
-                do! loop ()
+                if webSocket |> Websocket.isWebsocketOpen then
+                    do! Websocket.receiveMessage buffer messageType stream webSocket
+                    replyChannel.Reply ()
+                    do! loop ()
             }
             loop ()
         )

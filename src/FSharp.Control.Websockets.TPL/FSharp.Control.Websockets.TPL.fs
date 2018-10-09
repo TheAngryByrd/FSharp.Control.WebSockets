@@ -121,9 +121,11 @@ module ThreadSafeWebsocket =
                     do! Websocket.sendMessage cancellationToken buffer messageType stream webSocket
                     replyChannel.SetResult ()
                 | Close (cancellationToken, status, message, replyChannel) ->
+                    hasClosedBeenSent <- true
                     do! webSocket.CloseAsync(status,message,cancellationToken)
                     replyChannel.SetResult ()
                 | CloseOutput (cancellationToken, status, message, replyChannel) ->
+                    hasClosedBeenSent <- true
                     do! webSocket.CloseOutputAsync(status,message,cancellationToken)
                     replyChannel.SetResult ()
         }
