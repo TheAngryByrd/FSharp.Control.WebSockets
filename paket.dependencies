@@ -11,6 +11,8 @@ nuget SourceLink.Create.CommandLine 2.8.1 copy_local: true
 nuget YoloDev.Expecto.TestSdk 0.5.0
 nuget Microsoft.NET.Test.Sdk 15.7.2
 nuget altcover 4.0.603
+nuget System.Threading.Tasks.Dataflow
+nuget TaskBuilder.fs
 
 // [ FAKE GROUP ]
 group Build

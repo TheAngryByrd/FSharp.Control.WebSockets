@@ -1,0 +1,4 @@
+FSharp.Core
+SourceLink.Create.CommandLine
+System.Threading.Tasks.Dataflow
+TaskBuilder.fs

@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <Title>FSharp.Control.Websockets</Title>
+    <Title>FSharp.Control.Websockets.TPL</Title>
     <Description>FSharp.Control.Websockets does the thing!</Description>
     <!-- summary is not migrated from project.json, but you can use the <Description> property for that if needed. -->
     <PackageTags>f#, fsharp</PackageTags>
-    <PackageProjectUrl>https://github.com/MyGithubUsername/FSharp.Control.Websockets</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/MyGithubUsername/FSharp.Control.Websockets/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/TheAngryByrd/FSharp.Control.Websockets</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TheAngryByrd/FSharp.Control.Websockets/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <Authors>TheAngryByrd</Authors>
@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="FSharp.Control.Websockets.fs" />
+    <Compile Include="FSharp.Control.Websockets.TPL.fs" />
   </ItemGroup>
   <Import Project="..\..\fsc.props" />
   <Import Project="..\..\netfx.props" />
