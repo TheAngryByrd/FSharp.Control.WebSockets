@@ -1,5 +1,11 @@
 {
   "sdk": {
+<<<<<<< HEAD
     "version": "2.1.504"
   }
 }
+=======
+    "version": "2.1.401"
+  }
+}
+>>>>>>> Fix deps, add tpl tests proj

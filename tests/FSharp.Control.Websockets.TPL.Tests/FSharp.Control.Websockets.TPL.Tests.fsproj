@@ -7,11 +7,12 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="AssemblyInfo.fs" />
+        <Compile Include="Infrastructure.fs" />
         <Compile Include="Tests.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="../../src/FSharp.Control.Websockets/FSharp.Control.Websockets.fsproj" />
+        <ProjectReference Include="../../src/FSharp.Control.Websockets.TPL/FSharp.Control.Websockets.TPL.fsproj" />
     </ItemGroup>
     <Import Project="..\..\fsc.props" />
     <Import Project="..\..\netfx.props" />
