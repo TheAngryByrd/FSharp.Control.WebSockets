@@ -120,7 +120,7 @@ module ThreadSafeWebsocket =
     | Close of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
     | CloseOutput of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
 
-    type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<unit>
+    type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<Result<unit, exn>>
 
     type ThreadSafeWebSocket =
         { websocket : WebSocket
@@ -170,7 +170,7 @@ module ThreadSafeWebsocket =
                 let! (buffer, messageType, stream, replyChannel) = inbox.Receive()
                 if webSocket |> Websocket.isWebsocketOpen then
                     do! Websocket.receiveMessage buffer messageType stream webSocket
-                    replyChannel.Reply ()
+                    replyChannel.Reply (Ok ())
                     do! loop ()
             }
             loop ()
@@ -194,8 +194,10 @@ module ThreadSafeWebsocket =
 
     let receiveMessageAsUTF8 (wsts : ThreadSafeWebSocket) = async {
         use stream = new IO.MemoryStream()
-        do! receiveMessage wsts Websocket.defaultBufferSize  WebSocketMessageType.Text stream
-        return stream |> IO.MemoryStream.ToUTF8String
+        let! response = receiveMessage wsts Websocket.defaultBufferSize  WebSocketMessageType.Text stream
+        match response with
+        | Ok () -> return stream |> IO.MemoryStream.ToUTF8String |> Ok
+        | Error ex -> return Error ex
     }
 
     let close (wsts : ThreadSafeWebSocket) status message =
