@@ -2,6 +2,7 @@ namespace FSharp.Control.Websockets
 
 open System.Threading
 open System.Threading.Tasks
+open System.Runtime.ExceptionServices
 
 type Async =
     static member AwaitTaskWithCancellation (f: CancellationToken -> Task) : Async<unit> = async {
@@ -115,12 +116,14 @@ module ThreadSafeWebsocket =
     open System.Net.WebSockets
     open Stream
 
-    type SendMessages =
-    | Send of  bufferSize : int * WebSocketMessageType *  IO.Stream * AsyncReplyChannel<Result<unit, exn>>
-    | Close of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
-    | CloseOutput of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
+    type MessageResult = Result<unit, ExceptionDispatchInfo>
 
-    type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<Result<unit, exn>>
+    type SendMessages =
+    | Send of  bufferSize : int * WebSocketMessageType *  IO.Stream * AsyncReplyChannel<MessageResult>
+    | Close of  WebSocketCloseStatus * string * AsyncReplyChannel<MessageResult>
+    | CloseOutput of  WebSocketCloseStatus * string * AsyncReplyChannel<MessageResult>
+
+    type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<MessageResult>
 
     type ThreadSafeWebSocket =
         { websocket : WebSocket
@@ -138,30 +141,29 @@ module ThreadSafeWebsocket =
             x.websocket.CloseStatusDescription
 
     let createFromWebSocket (webSocket : WebSocket) =
+        /// handle executing a task in a try/catch and wrapping up the callstack info for later
+        let inline wrap (action: Async<unit>) (reply: AsyncReplyChannel<MessageResult>) = async {
+            try
+                do! action
+                reply.Reply(Ok ())
+            with
+            | ex -> 
+                let dispatch = ExceptionDispatchInfo.Capture ex
+                reply.Reply(Error dispatch)
+        }
+
         let sendAgent = MailboxProcessor<SendMessages>.Start(fun inbox ->
             let rec loop () = async {
                 let! message = inbox.Receive()
                 if webSocket |> Websocket.isWebsocketOpen then
                     match message with
                     | Send (buffer, messageType, stream, replyChannel) ->
-                        try
-                            do! Websocket.sendMessage buffer messageType stream webSocket
-                            replyChannel.Reply (Ok ())
-                        with
-                        | ex -> replyChannel.Reply (Error ex)
+                        do! wrap (Websocket.sendMessage buffer messageType stream webSocket) replyChannel
                         return! loop ()
                     | Close (status, message, replyChannel) ->
-                        try
-                            do! Websocket.asyncClose status message webSocket
-                            replyChannel.Reply (Ok ())
-                        with
-                        | ex -> replyChannel.Reply (Error ex)
+                        do! wrap (Websocket.asyncClose status message webSocket) replyChannel
                     | CloseOutput (status, message, replyChannel) ->
-                        try
-                            do! Websocket.asyncCloseOutput status message webSocket
-                            replyChannel.Reply (Ok ())
-                        with
-                        | ex -> replyChannel.Reply (Error ex)
+                        do! wrap (Websocket.asyncCloseOutput status message webSocket) replyChannel
             }
             loop ()
         )
