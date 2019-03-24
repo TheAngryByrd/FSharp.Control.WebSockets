@@ -116,9 +116,9 @@ module ThreadSafeWebsocket =
     open Stream
 
     type SendMessages =
-    | Send of  bufferSize : int * WebSocketMessageType *  IO.Stream * AsyncReplyChannel<unit>
-    | Close of  WebSocketCloseStatus * string * AsyncReplyChannel<unit>
-    | CloseOutput of  WebSocketCloseStatus * string * AsyncReplyChannel<unit>
+    | Send of  bufferSize : int * WebSocketMessageType *  IO.Stream * AsyncReplyChannel<Result<unit, exn>>
+    | Close of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
+    | CloseOutput of  WebSocketCloseStatus * string * AsyncReplyChannel<Result<unit, exn>>
 
     type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<unit>
 
@@ -144,16 +144,24 @@ module ThreadSafeWebsocket =
                 if webSocket |> Websocket.isWebsocketOpen then
                     match message with
                     | Send (buffer, messageType, stream, replyChannel) ->
-                        do! Websocket.sendMessage buffer messageType stream webSocket
-                        replyChannel.Reply ()
+                        try
+                            do! Websocket.sendMessage buffer messageType stream webSocket
+                            replyChannel.Reply (Ok ())
+                        with
+                        | ex -> replyChannel.Reply (Error ex)
                         return! loop ()
                     | Close (status, message, replyChannel) ->
-                        do! Websocket.asyncClose status message webSocket
-                        replyChannel.Reply ()
+                        try
+                            do! Websocket.asyncClose status message webSocket
+                            replyChannel.Reply (Ok ())
+                        with
+                        | ex -> replyChannel.Reply (Error ex)
                     | CloseOutput (status, message, replyChannel) ->
-                        do! Websocket.asyncCloseOutput status message webSocket
-                        replyChannel.Reply ()
-
+                        try
+                            do! Websocket.asyncCloseOutput status message webSocket
+                            replyChannel.Reply (Ok ())
+                        with
+                        | ex -> replyChannel.Reply (Error ex)
             }
             loop ()
         )
@@ -178,7 +186,7 @@ module ThreadSafeWebsocket =
 
     let sendMessageAsUTF8(wsts : ThreadSafeWebSocket) (text : string) = async {
         use stream = IO.MemoryStream.UTF8toMemoryStream text
-        do! sendMessage wsts  Websocket.defaultBufferSize  WebSocketMessageType.Text stream
+        return! sendMessage wsts  Websocket.defaultBufferSize  WebSocketMessageType.Text stream
     }
 
     let receiveMessage (wsts : ThreadSafeWebSocket) bufferSize messageType stream =

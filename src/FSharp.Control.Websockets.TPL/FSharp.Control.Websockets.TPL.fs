@@ -86,10 +86,11 @@ module ThreadSafeWebsocket =
     open System.Threading.Tasks
     open System.Threading.Tasks.Dataflow
     open FSharp.Control.Tasks.V2
+    
     type SendMessages =
-    | Send of  bufferSize : CancellationToken * int * WebSocketMessageType *  IO.Stream * TaskCompletionSource<unit>
-    | Close of CancellationToken * WebSocketCloseStatus * string * TaskCompletionSource<unit>
-    | CloseOutput of CancellationToken * WebSocketCloseStatus * string * TaskCompletionSource<unit>
+    | Send of  bufferSize : CancellationToken * int * WebSocketMessageType *  IO.Stream * TaskCompletionSource<Result<unit, exn>>
+    | Close of CancellationToken * WebSocketCloseStatus * string * TaskCompletionSource<Result<unit, exn>>
+    | CloseOutput of CancellationToken * WebSocketCloseStatus * string * TaskCompletionSource<Result<unit, exn>>
 
     type ReceiveMessage = CancellationToken * int * WebSocketMessageType * IO.Stream  * TaskCompletionSource<unit>
 
@@ -118,16 +119,25 @@ module ThreadSafeWebsocket =
                 let! message = sendBuffer.ReceiveAsync()
                 match message with
                 | Send (cancellationToken, buffer, messageType, stream, replyChannel) ->
-                    do! Websocket.sendMessage cancellationToken buffer messageType stream webSocket
-                    replyChannel.SetResult ()
+                    try
+                        do! Websocket.sendMessage cancellationToken buffer messageType stream webSocket
+                        replyChannel.SetResult (Ok ())
+                    with
+                    | ex -> replyChannel.SetResult (Error ex)
                 | Close (cancellationToken, status, message, replyChannel) ->
-                    hasClosedBeenSent <- true
-                    do! webSocket.CloseAsync(status,message,cancellationToken)
-                    replyChannel.SetResult ()
+                    try
+                        hasClosedBeenSent <- true
+                        do! webSocket.CloseAsync(status,message,cancellationToken)
+                        replyChannel.SetResult (Ok ())
+                    with
+                    | ex -> replyChannel.SetResult (Error ex)
                 | CloseOutput (cancellationToken, status, message, replyChannel) ->
-                    hasClosedBeenSent <- true
-                    do! webSocket.CloseOutputAsync(status,message,cancellationToken)
-                    replyChannel.SetResult ()
+                    try
+                        hasClosedBeenSent <- true
+                        do! webSocket.CloseOutputAsync(status,message,cancellationToken)
+                        replyChannel.SetResult (Ok ())
+                    with
+                    | ex -> replyChannel.SetResult(Error ex)
         }
 
         let receiveLoop () = task {
@@ -147,19 +157,19 @@ module ThreadSafeWebsocket =
         }
 
     let sendMessage (wsts : ThreadSafeWebSocket) cancellationToken bufferSize messageType stream = task {
-        let reply = new TaskCompletionSource<unit>()
+        let reply = new TaskCompletionSource<_>()
         let msg = Send(cancellationToken,bufferSize, messageType, stream, reply)
         let! accepted = wsts.sendChannel.SendAsync msg
-        do! reply.Task
+        return! reply.Task
     }
 
     let sendMessageAsUTF8(wsts : ThreadSafeWebSocket) cancellationToken (text : string) = task {
         use stream = IO.MemoryStream.UTF8toMemoryStream text
-        do! sendMessage wsts cancellationToken Websocket.defaultBufferSize WebSocketMessageType.Text stream
+        return! sendMessage wsts cancellationToken Websocket.defaultBufferSize WebSocketMessageType.Text stream
     }
 
     let receiveMessage (wsts : ThreadSafeWebSocket) cancellationToken bufferSize messageType stream = task {
-        let reply = new TaskCompletionSource<unit>()
+        let reply = new TaskCompletionSource<_>()
         let msg = (cancellationToken, bufferSize, messageType, stream, reply)
         let! accepted = wsts.receiveChannel.SendAsync(msg)
         do! reply.Task
@@ -172,16 +182,16 @@ module ThreadSafeWebsocket =
     }
 
     let close (wsts : ThreadSafeWebSocket) cancellationToken status message = task {
-        let reply = new TaskCompletionSource<unit>()
+        let reply = new TaskCompletionSource<_>()
         let msg = Close(cancellationToken,status, message, reply)
         let! accepted = wsts.sendChannel.SendAsync msg
-        do! reply.Task
+        return! reply.Task
     }
 
     let closeOutput (wsts : ThreadSafeWebSocket) cancellationToken status message =task {
-        let reply = new TaskCompletionSource<unit>()
+        let reply = new TaskCompletionSource<_>()
         let msg = CloseOutput(cancellationToken,status, message, reply)
         let! accepted = wsts.sendChannel.SendAsync msg
-        do! reply.Task
+        return! reply.Task
     }
 
