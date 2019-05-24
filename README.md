@@ -24,7 +24,77 @@ Name | Stable | Prerelease
 FSharp.Control.Websockets | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets)](https://www.nuget.org/packages/FSharp.Control.Websockets/) | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets?includePreReleases=true)](https://www.nuget.org/packages/FSharp.Control.Websockets/)
 FSharp.Control.Websockets.TPL | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets.TPL)](https://www.nuget.org/packages/FSharp.Control.Websockets.TPL/) | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets.TPL?includePreReleases=true)](https://www.nuget.org/packages/FSharp.Control.Websockets.TPL/)
 
+
+### Using
+
+```fsharp
+open System
+open System.Net
+open System.Net.WebSockets
+open System.Threading.Tasks
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
+open Microsoft.AspNetCore.Http
+open FSharp.Control.Websockets
+
+let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = async {
+
+    if httpContext.WebSockets.IsWebSocketRequest then
+        let! websocket  = httpContext.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
+        // Create a thread-safe WebSocket from an existing websocket
+        let threadSafeWebSocket = ThreadSafeWebSocket.createFromWebSocket websocket
+        while threadSafeWebSocket.State = WebSocketState.Open do
+            try
+                let! result =
+                     threadSafeWebSocket
+                    |> ThreadSafeWebSocket.receiveMessageAsUTF8
+                match result with
+                | Ok(WebSocket.ReceiveUTF8Result.String text) ->
+                    //Echo it back to the client
+                    do! WebSocket.sendMessageAsUTF8 text websocket
+                | Ok(WebSocket.ReceiveUTF8Result.StreamClosed (status, reason)) ->
+                    printfn "Socket closed %A - %s" status reason
+                | Error (ex) ->
+                    printfn "Receiving threw an exception %A" ex.SourceException
+            with e ->
+                printfn "%A" e
+
+    else
+        do! next()
+
+}
+
+
+//Convenience function for making middleware with F# asyncs and funcs
+let fuse (middlware : HttpContext -> (unit -> Async<unit>) -> Async<unit>) (app:IApplicationBuilder) =
+    app.Use(fun env next ->
+                middlware env (next.Invoke >> Async.AwaitTask)
+                |> Async.StartAsTask :> Task)
+
+let configureEchoServer  (appBuilder : IApplicationBuilder) =
+    appBuilder.UseWebSockets()
+    |> Server.fuse (echoWebSocket)
+    |> ignore
+
+let getKestrelServer configureServer uri = async {
+    let configBuilder = new ConfigurationBuilder()
+    let configBuilder = configBuilder.AddInMemoryCollection()
+    let config = configBuilder.Build()
+    config.["server.urls"] <- uri
+    let host = WebHostBuilder()
+                .UseConfiguration(config)
+                .UseKestrel()
+                .Configure(fun app -> configureServer app )
+                .Build()
+
+    do! host.StartAsync() |> Async.AwaitTask
+    return host
+}
+
+```
+
 ---
+
 
 ### Building
 
