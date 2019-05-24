@@ -13,7 +13,7 @@
     <ItemGroup>
         <ProjectReference Include="../../src/FSharp.Control.Websockets/FSharp.Control.Websockets.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\fsc.props" />
+    <!-- <Import Project="..\..\fsc.props" /> -->
     <Import Project="..\..\netfx.props" />
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
