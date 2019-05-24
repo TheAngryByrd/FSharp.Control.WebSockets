@@ -37,7 +37,7 @@ let toolsDir = __SOURCE_DIRECTORY__  @@ "tools"
 
 let coverageReportDir =  __SOURCE_DIRECTORY__  @@ "docs" @@ "coverage"
 
-let gitOwner = "MyGithubUsername"
+let gitOwner = "TheAngryByrd"
 let gitRepoName = "FSharp.Control.Websockets"
 
 let isRelease (targets : Target list) =

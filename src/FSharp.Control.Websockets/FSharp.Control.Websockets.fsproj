@@ -14,7 +14,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <Authors>TheAngryByrd</Authors>
-    <RepositoryUrl>https://github.com/MyGithubUsername/FSharp.Control.Websockets</RepositoryUrl>
+    <RepositoryUrl>https://github.com/TheAngryByrd/FSharp.Control.Websockets</RepositoryUrl>
     <!-- owners is not supported in MSBuild -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
