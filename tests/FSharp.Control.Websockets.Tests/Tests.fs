@@ -10,10 +10,12 @@ open System.Threading.Tasks
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
+
+open FSharp.Control.Websockets
+
+open Infrastructure
 open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.Configuration
-open Infrastructure
-
 
 let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = async {
 
@@ -21,12 +23,10 @@ let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = asy
         let! (websocket : WebSocket) = httpContext.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
         while websocket.State = WebSocketState.Open do
             try
-                let! result =
-                     websocket
-                    |> WebSocket.receiveMessageAsUTF8
+                let! result = WebSocket.receiveMessageAsUTF8 websocket
                 match result with
                 | WebSocket.ReceiveUTF8Result.String text ->
-                    do! WebSocket.sendMessageAsUTF8 text websocket
+                    do! WebSocket.sendMessageAsUTF8 websocket text
                 | WebSocket.ReceiveUTF8Result.StreamClosed (status, reason) ->
                     printfn "Socket closed %A - %s" status reason
             with e ->
