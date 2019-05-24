@@ -27,7 +27,7 @@ let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = asy
                 match result with
                 | WebSocket.ReceiveUTF8Result.String text ->
                     do! WebSocket.sendMessageAsUTF8 websocket text
-                | WebSocket.ReceiveUTF8Result.StreamClosed (status, reason) ->
+                | WebSocket.ReceiveUTF8Result.Closed (status, reason) ->
                     printfn "Socket closed %A - %s" status reason
             with e ->
                 printfn "%A" e

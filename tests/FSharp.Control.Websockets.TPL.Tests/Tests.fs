@@ -28,13 +28,11 @@ let echoWebSocket (httpContext : HttpContext) (next : unit -> Task) = task {
         let! (websocket : WebSocket) = httpContext.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
         while websocket.State = WebSocketState.Open do
             try
-                let! result =
-                     websocket
-                    |> WebSocket.receiveMessageAsUTF8 CancellationToken.None
+                let! result =WebSocket.receiveMessageAsUTF8 websocket CancellationToken.None
                 match result with
                 | WebSocket.ReceiveUTF8Result.String text ->
-                    do! WebSocket.sendMessageAsUTF8 CancellationToken.None text websocket
-                | WebSocket.ReceiveUTF8Result.StreamClosed (status, reason) ->
+                    do! WebSocket.sendMessageAsUTF8 websocket CancellationToken.None text
+                | WebSocket.ReceiveUTF8Result.Closed (status, reason) ->
                     printfn "Socket closed %A - %s" status reason
             with e ->
                 printfn "%A" e
@@ -67,7 +65,7 @@ let tests =
             Expect.equal actual (Ok <| WebSocket.ReceiveUTF8Result.String expected) "did not echo"
 
 
-            let! _ = ThreadSafeWebSocket.close clientWebSocket CancellationToken.None WebSocketCloseStatus.NormalClosure "Closing"
+            let! _ = ThreadSafeWebSocket.close clientWebSocket WebSocketCloseStatus.NormalClosure "Closing" CancellationToken.None
             Expect.equal clientWebSocket.State WebSocketState.Closed "Should be closed"
         }
 
@@ -82,7 +80,7 @@ let tests =
             Expect.equal actual (Ok <| WebSocket.ReceiveUTF8Result.String expected) "did not echo"
 
 
-            let! _ = ThreadSafeWebSocket.closeOutput clientWebSocket CancellationToken.None WebSocketCloseStatus.NormalClosure "Closing"
+            let! _ = ThreadSafeWebSocket.closeOutput clientWebSocket  WebSocketCloseStatus.NormalClosure "Closing" CancellationToken.None
             Expect.equal clientWebSocket.State WebSocketState.CloseSent "Should have sent closed without waiting acknowledgement"
         }
     ]

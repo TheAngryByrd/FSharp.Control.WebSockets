@@ -79,7 +79,6 @@ module Stream =
             |> Text.Encoding.UTF8.GetString
             |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
 
-
         /// **Description**
         ///
         /// Turns a `MemoryStream` into a a UTF8 string
@@ -111,6 +110,20 @@ module WebSocket =
     [<Literal>]
     let DefaultBufferSize  : int = 16384 // (16 * 1024)
 
+    /// **Description**
+    ///
+    /// Determines if the websocket is open
+    ///
+    /// **Parameters**
+    ///   * `socket` - parameter of type `WebSocket`
+    ///
+    /// **Output Type**
+    ///   * `bool`
+    ///
+    /// **Exceptions**
+    ///
+    let isWebsocketOpen (socket : WebSocket) =
+        socket.State = WebSocketState.Open
 
     /// **Description**
     ///
@@ -190,21 +203,6 @@ module WebSocket =
 
     /// **Description**
     ///
-    /// Determines if the websocket is open
-    ///
-    /// **Parameters**
-    ///   * `socket` - parameter of type `WebSocket`
-    ///
-    /// **Output Type**
-    ///   * `bool`
-    ///
-    /// **Exceptions**
-    ///
-    let isWebsocketOpen (socket : WebSocket) =
-        socket.State = WebSocketState.Open
-
-    /// **Description**
-    ///
     /// Sends a whole message to the websocket read from the given stream
     ///
     /// **Parameters**
@@ -218,7 +216,7 @@ module WebSocket =
     ///
     /// **Exceptions**
     ///
-    let sendMessage (socket : WebSocket) (bufferSize : int) messageType (readableStream : #IO.Stream)  = async {
+    let sendMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (readableStream : #IO.Stream)  = async {
         let buffer = Array.create (bufferSize) Byte.MinValue
 
         let rec sendMessage' () = async {
@@ -247,7 +245,7 @@ module WebSocket =
     ///
     /// **Exceptions**
     ///
-    let sendMessageAsUTF8 (socket : WebSocket) text = async {
+    let sendMessageAsUTF8 (socket : WebSocket) (text : string) = async {
         use stream = IO.MemoryStream.UTF8toMemoryStream text
         do! sendMessage socket DefaultBufferSize WebSocketMessageType.Text stream
     }
@@ -268,7 +266,7 @@ module WebSocket =
     /// **Parameters**
     ///   * `socket` - parameter of type `WebSocket`
     ///   * `bufferSize` - parameter of type `int` - How many bytes to read from the socket at a time.  Recommended to use `DefaultBufferSize`.
-    ///   * `messageType` - parameter of type `WebSocketMessageType` -  Indicates whether the application is sending a binary or text message.
+    ///   * `messageType` - parameter of type `WebSocketMessageType` -  Indicates whether the application is receiving a binary or text message.
     ///   * `writeableStream` - parameter of type `IO.Stream` - A writeable stream that data from the websocket is written into.
     ///
     /// **Output Type**
@@ -304,7 +302,7 @@ module WebSocket =
         /// Reading from the websocket completed.
         | String of string
         /// The websocket was closed during reading.
-        | StreamClosed of closeStatus: WebSocketCloseStatus * closeStatusDescription:string
+        | Closed of closeStatus: WebSocketCloseStatus * closeStatusDescription:string
 
 
     /// **Description**
@@ -325,8 +323,8 @@ module WebSocket =
         match result with
         | ReceiveStreamResult.Stream s ->
             return stream |> IO.MemoryStream.ToUTF8String |> String
-        | Closed(status, reason) ->
-            return ReceiveUTF8Result.StreamClosed(status, reason)
+        | ReceiveStreamResult.Closed(status, reason) ->
+            return ReceiveUTF8Result.Closed(status, reason)
     }
 
 module ThreadSafeWebSocket =
@@ -342,19 +340,25 @@ module ThreadSafeWebSocket =
 
     type ReceiveMessage =  int * WebSocketMessageType * IO.Stream  * AsyncReplyChannel<Result<WebSocket.ReceiveStreamResult, ExceptionDispatchInfo>>
 
-    /// The ThreadSafeWebSocket record allows applications to send and receive data after the WebSocket upgrade has completed.  This puts a `MailboxProcessor` in front of all send and receive messages to prevent multiple threads reading or writing to the socket at a time. Without this a websocket send/receive may throw a `InvalidOperationException` with the message: `There is already one outstanding 'SendAsync' call for this WebSocket instance. ReceiveAsync and SendAsync can be called simultaneously, but at most one outstanding operation for each of them is allowed at the same time.`
+    /// The ThreadSafeWebSocket record allows applications to send and receive data after the WebSocket upgrade has completed.  This puts a `MailboxProcessor` in front of all send and receive messages to prevent multiple threads reading or writing to the socket at a time. Without this a websocket send/receive may throw a `InvalidOperationException` with the message:
+    ///
+    /// `There is already one outstanding 'SendAsync' call for this WebSocket instance. ReceiveAsync and SendAsync can be called simultaneously, but at most one outstanding operation for each of them is allowed at the same time.`
     type ThreadSafeWebSocket =
         { websocket : WebSocket
           sendChannel : MailboxProcessor<SendMessages>
           receiveChannel : MailboxProcessor<ReceiveMessage>
         }
         interface IDisposable with
+            /// Used to clean up unmanaged resources for ASP.NET and self-hosted implementations.
             member x.Dispose() =
                 x.websocket.Dispose()
+        /// Returns the current state of the WebSocket connection.
         member x.State =
             x.websocket.State
+        /// Indicates the reason why the remote endpoint initiated the close handshake.
         member x.CloseStatus =
             x.websocket.CloseStatus |> Option.ofNullable
+        ///Allows the remote endpoint to describe the reason why the connection was closed.
         member x.CloseStatusDescription =
             x.websocket.CloseStatusDescription
 
@@ -456,7 +460,7 @@ module ThreadSafeWebSocket =
 
     /// **Description**
     ///
-    /// Reads an entire message from a websocket.
+    /// Reads an entire message from a websocket as a string.
     ///
     /// **Parameters**
     ///   * `threadSafeWebSocket` - parameter of type `ThreadSafeWebSocket`
@@ -491,7 +495,7 @@ module ThreadSafeWebSocket =
         match response with
         | Ok (WebSocket.ReceiveStreamResult.Stream s) -> return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok
         | Ok (WebSocket.Closed(status, reason)) ->
-            return Ok (WebSocket.ReceiveUTF8Result.StreamClosed(status, reason))
+            return Ok (WebSocket.ReceiveUTF8Result.Closed(status, reason))
         | Error ex -> return Error ex
 
     }
