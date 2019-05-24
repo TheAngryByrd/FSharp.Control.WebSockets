@@ -5,7 +5,7 @@ FSharp.Control.WebSockets wraps [dotnet websockets](https://docs.microsoft.com/e
 
 ### Why? 
 
-Dotnet websockets only allow for one receive and one send at a time. If multiple threads try to write to a websocket, it will throw a `System.InvalidOperationException` with the message `There is already one outstanding 'SendAsync' call for this WebSocket instance. ReceiveAsync and SendAsync can be called simultaneously, but at most one outstanding operation for each of them is allowed at the same time.`. This wraps a websocket in a hopac server-client model that allows for multiple threads to write or read at the same time. See https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.websocket.sendasync?view=netcore-2.0#Remarks
+Dotnet websockets only allow for one receive and one send at a time. If multiple threads try to write to a websocket, it will throw a `System.InvalidOperationException` with the message `There is already one outstanding 'SendAsync' call for this WebSocket instance. ReceiveAsync and SendAsync can be called simultaneously, but at most one outstanding operation for each of them is allowed at the same time.`. This wraps a websocket in a FIFO that allows for multiple threads to write or read at the same time. See https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.websocket.sendasync?view=netcore-2.0#Remarks
 
 ---
 
@@ -19,9 +19,10 @@ MacOS/Linux | Windows
 
 ## Nuget 
 
-Stable | Prerelease
---- | ---
-[![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets)](https://www.nuget.org/packages/FSharp.Control.Websockets/) | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets?includePreReleases=true)](https://www.nuget.org/packages/FSharp.Control.Websockets/)
+Name | Stable | Prerelease
+--- | --- | ---
+FSharp.Control.Websockets | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets)](https://www.nuget.org/packages/FSharp.Control.Websockets/) | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets?includePreReleases=true)](https://www.nuget.org/packages/FSharp.Control.Websockets/)
+FSharp.Control.Websockets.TPL | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets.TPL)](https://www.nuget.org/packages/FSharp.Control.Websockets.TPL/) | [![NuGet Badge](https://buildstats.info/nuget/FSharp.Control.Websockets.TPL?includePreReleases=true)](https://www.nuget.org/packages/FSharp.Control.Websockets.TPL/)
 
 ---
 
