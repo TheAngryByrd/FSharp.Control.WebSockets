@@ -141,7 +141,7 @@ let coverageThresholdPercent = 80
 
 let altCoverArgs proj = [
     "/p:AltCover=true"
-    sprintf "/p:AltCoverThreshold=%d" coverageThresholdPercent
+    // sprintf "/p:AltCoverThreshold=%d" coverageThresholdPercent
     sprintf "/p:AltCoverLcovReport=%s" "lcov.info"
     sprintf "/p:AltCoverAssemblyExcludeFilter=%s" (IO.Path.GetFileNameWithoutExtension(proj))
 ]
