@@ -139,6 +139,13 @@ let invokeAsync f = async { f () }
 
 let coverageThresholdPercent = 80
 
+let altCoverArgs proj = [
+    "/p:AltCover=true"
+    // sprintf "/p:AltCoverThreshold=%d" coverageThresholdPercent
+    sprintf "/p:AltCoverLcovReport=%s" "lcov.info"
+    sprintf "/p:AltCoverAssemblyExcludeFilter=%s" (IO.Path.GetFileNameWithoutExtension(proj))
+]
+
 Target.create "DotnetTest" <| fun ctx ->
     !! testsGlob
     |> Seq.iter (fun proj ->
@@ -146,10 +153,10 @@ Target.create "DotnetTest" <| fun ctx ->
             let args =
                 [
                     "--no-build"
-                    "/p:AltCover=true"
-                    sprintf "/p:AltCoverThreshold=%d" coverageThresholdPercent
-                    sprintf "/p:AltCoverAssemblyExcludeFilter=%s" (IO.Path.GetFileNameWithoutExtension(proj))
-                ] |> String.concat " "
+
+                ]
+                @ altCoverArgs proj
+                |> String.concat " "
             { c with
                 Configuration = configuration (ctx.Context.AllExecutingTargets)
                 Common =
@@ -186,11 +193,12 @@ Target.create "GenerateCoverageReport" <| fun _ ->
 Target.create "WatchTests" <| fun _ ->
     !! testsGlob
     |> Seq.map(fun proj -> fun () ->
+        let args = altCoverArgs proj
         dotnet.watch
             (fun opt ->
                 opt |> DotNet.Options.withWorkingDirectory (IO.Path.GetDirectoryName proj))
             "test"
-            ""
+            (args |> String.concat " ")
         |> ignore
     )
     |> Seq.iter (invokeAsync >> Async.Catch >> Async.Ignore >> Async.Start)

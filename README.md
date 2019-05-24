@@ -8,8 +8,8 @@
 
 MacOS/Linux | Windows
 --- | ---
-[![Travis Badge](https://travis-ci.org/MyGithubUsername/FSharp.Control.Websockets.svg?branch=master)](https://travis-ci.org/MyGithubUsername/FSharp.Control.Websockets) | [![Build status](https://ci.appveyor.com/api/projects/status/github/MyGithubUsername/FSharp.Control.Websockets?svg=true)](https://ci.appveyor.com/project/MyGithubUsername/FSharp.Control.Websockets)
-[![Build History](https://buildstats.info/travisci/chart/MyGithubUsername/FSharp.Control.Websockets)](https://travis-ci.org/MyGithubUsername/FSharp.Control.Websockets/builds) | [![Build History](https://buildstats.info/appveyor/chart/MyGithubUsername/FSharp.Control.Websockets)](https://ci.appveyor.com/project/MyGithubUsername/FSharp.Control.Websockets)  
+[![Travis Badge](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets.svg?branch=master)](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets) | [![Build status](https://ci.appveyor.com/api/projects/status/github/TheAngryByrd/fsharp-control-websockets?svg=true)](https://ci.appveyor.com/project/TheAngryByrd/fsharp-control-websockets)
+[![Build History](https://buildstats.info/travisci/chart/TheAngryByrd/FSharp.Control.Websockets)](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets/builds) | [![Build History](https://buildstats.info/appveyor/chart/TheAngryByrd/fsharp-control-websockets)](https://ci.appveyor.com/project/TheAngryByrd/fsharp-control-websockets)  
 
 
 ## Nuget 

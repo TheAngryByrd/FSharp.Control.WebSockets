@@ -1,0 +1,291 @@
+TN:
+SF:/Users/jimmybyrd/Documents/GitHub/FSharp.Control.Websockets/src/FSharp.Control.Websockets/FSharp.Control.Websockets.fs
+FN:7,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Async::AwaitTaskWithCancellation(Microsoft.FSharp.Core.FSharpFunc`2<System.Threading.CancellationToken,System.Threading.Tasks.Task>)
+FN:12,Microsoft.FSharp.Control.FSharpAsync`1<a> FSharp.Control.Websockets.Async::AwaitTaskWithCancellation(Microsoft.FSharp.Core.FSharpFunc`2<System.Threading.CancellationToken,System.Threading.Tasks.Task`1<a>>)
+FN:141,FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket FSharp.Control.Websockets.ThreadSafeWebsocket::createFromWebSocket(System.Net.WebSockets.WebSocket)
+FN:177,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::sendMessage(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream)
+FN:179,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::sendMessageAsUTF8(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.String)
+FN:185,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::receiveMessage(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream)
+FN:187,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket::receiveMessageAsUTF8(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket)
+FN:194,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::close(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Net.WebSockets.WebSocketCloseStatus,System.String)
+FN:197,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::closeOutput(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Net.WebSockets.WebSocketCloseStatus,System.String)
+FN:134,System.Net.WebSockets.WebSocketState FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_State()
+FN:136,Microsoft.FSharp.Core.FSharpOption`1<System.Net.WebSockets.WebSocketCloseStatus> FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_CloseStatus()
+FN:138,System.String FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_CloseStatusDescription()
+FN:132,System.Void FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::System-IDisposable-Dispose()
+FN:147,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@148-3::Invoke(Microsoft.FSharp.Core.Unit)
+FN:151,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@152-4::Invoke(Microsoft.FSharp.Core.Unit)
+FN:154,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@155-5::Invoke(Microsoft.FSharp.Core.Unit)
+FN:143,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@144-2::Invoke(FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages)
+FN:143,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@143-1::Invoke(Microsoft.FSharp.Core.Unit)
+FN:142,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@142::Invoke(Microsoft.FSharp.Core.Unit)
+FN:158,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendAgent@141::Invoke(Microsoft.FSharp.Control.FSharpMailboxProcessor`1<FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages>)
+FN:166,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@166-10::Invoke(Microsoft.FSharp.Core.Unit)
+FN:164,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@165-9::Invoke(Microsoft.FSharp.Core.Unit)
+FN:162,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@163-8::Invoke(System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>>)
+FN:162,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@162-7::Invoke(Microsoft.FSharp.Core.Unit)
+FN:161,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@161-6::Invoke(Microsoft.FSharp.Core.Unit)
+FN:168,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveAgent@160::Invoke(Microsoft.FSharp.Control.FSharpMailboxProcessor`1<System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>>>)
+FN:177,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessage@177-2::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FN:181,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@181-5::Invoke(Microsoft.FSharp.Core.Unit)
+FN:180,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@181-4::Invoke(System.IO.MemoryStream)
+FN:180,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@180-3::Invoke(Microsoft.FSharp.Core.Unit)
+FN:185,System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessage@185-1::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FN:189,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@190-5::Invoke(Microsoft.FSharp.Core.Unit)
+FN:188,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@189-4::Invoke(System.IO.MemoryStream)
+FN:188,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@188-3::Invoke(Microsoft.FSharp.Core.Unit)
+FN:194,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/close@194::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FN:197,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/closeOutput@197::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FN:62,System.Boolean FSharp.Control.Websockets.Websocket::isWebsocketOpen(a)
+FN:65,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::sendMessage(System.Int32,System.Net.WebSockets.WebSocketMessageType,a,b)
+FN:80,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::sendMessageAsUTF8(System.String,System.Net.WebSockets.WebSocket)
+FN:85,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::receiveMessage(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,System.Net.WebSockets.WebSocket)
+FN:106,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket::receiveMessageAsUTF8(System.Net.WebSockets.WebSocket)
+FN:46,System.Threading.Tasks.Task`1<System.Net.WebSockets.WebSocketReceiveResult> FSharp.Control.Websockets.Websocket/asyncReceive@46::Invoke(System.Threading.CancellationToken)
+FN:50,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncSend@50::Invoke(System.Threading.CancellationToken)
+FN:54,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncClose@54::Invoke(System.Threading.CancellationToken)
+FN:58,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncCloseOutput@58::Invoke(System.Threading.CancellationToken)
+FN:72,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@73-3::Invoke(Microsoft.FSharp.Core.Unit)
+FN:75,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@75-4::Invoke(Microsoft.FSharp.Core.Unit)
+FN:69,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@71-2::Invoke(System.Int32)
+FN:69,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@69-1::Invoke(Microsoft.FSharp.Core.Unit)
+FN:68,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@68::Invoke(Microsoft.FSharp.Core.Unit)
+FN:77,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage@77-1::Invoke(Microsoft.FSharp.Core.Unit)
+FN:66,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage@66::Invoke(Microsoft.FSharp.Core.Unit)
+FN:82,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@82-2::Invoke(Microsoft.FSharp.Core.Unit)
+FN:81,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@82-1::Invoke(System.IO.MemoryStream)
+FN:81,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@81::Invoke(Microsoft.FSharp.Core.Unit)
+FN:93,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@93-3::Invoke(Microsoft.FSharp.Core.Unit)
+FN:97,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@98-5::Invoke(Microsoft.FSharp.Core.Unit)
+FN:97,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@97-4::Invoke(Microsoft.FSharp.Core.Unit)
+FN:89,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@90-2::Invoke(System.Net.WebSockets.WebSocketReceiveResult)
+FN:89,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@89-1::Invoke(Microsoft.FSharp.Core.Unit)
+FN:88,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@88::Invoke(Microsoft.FSharp.Core.Unit)
+FN:86,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/receiveMessage@86::Invoke(Microsoft.FSharp.Core.Unit)
+FN:108,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@109-2::Invoke(Microsoft.FSharp.Core.Unit)
+FN:107,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@108-1::Invoke(System.IO.MemoryStream)
+FN:107,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@107::Invoke(Microsoft.FSharp.Core.Unit)
+FN:21,System.IO.MemoryStream FSharp.Control.Websockets.Stream::MemoryStream.UTF8toMemoryStream.Static(System.String)
+FN:24,System.String FSharp.Control.Websockets.Stream::MemoryStream.ToUTF8String.Static(System.IO.MemoryStream)
+FN:30,System.String FSharp.Control.Websockets.Stream::MemoryStream.ToUTF8String(System.IO.MemoryStream)
+FN:8,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@9-1::Invoke(System.Threading.CancellationToken)
+FN:8,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@8::Invoke(Microsoft.FSharp.Core.Unit)
+FN:13,Microsoft.FSharp.Control.FSharpAsync`1<a> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@14-3::Invoke(System.Threading.CancellationToken)
+FN:13,Microsoft.FSharp.Control.FSharpAsync`1<a> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@13-2::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Async::AwaitTaskWithCancellation(Microsoft.FSharp.Core.FSharpFunc`2<System.Threading.CancellationToken,System.Threading.Tasks.Task>)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<a> FSharp.Control.Websockets.Async::AwaitTaskWithCancellation(Microsoft.FSharp.Core.FSharpFunc`2<System.Threading.CancellationToken,System.Threading.Tasks.Task`1<a>>)
+FNDA:0,FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket FSharp.Control.Websockets.ThreadSafeWebsocket::createFromWebSocket(System.Net.WebSockets.WebSocket)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::sendMessage(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::sendMessageAsUTF8(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.String)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::receiveMessage(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket::receiveMessageAsUTF8(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::close(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Net.WebSockets.WebSocketCloseStatus,System.String)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket::closeOutput(FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket,System.Net.WebSockets.WebSocketCloseStatus,System.String)
+FNDA:0,System.Net.WebSockets.WebSocketState FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_State()
+FNDA:0,Microsoft.FSharp.Core.FSharpOption`1<System.Net.WebSockets.WebSocketCloseStatus> FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_CloseStatus()
+FNDA:0,System.String FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::get_CloseStatusDescription()
+FNDA:0,System.Void FSharp.Control.Websockets.ThreadSafeWebsocket/ThreadSafeWebSocket::System-IDisposable-Dispose()
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@148-3::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@152-4::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@155-5::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@144-2::Invoke(FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@143-1::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@142::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendAgent@141::Invoke(Microsoft.FSharp.Control.FSharpMailboxProcessor`1<FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages>)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@166-10::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@165-9::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@163-8::Invoke(System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>>)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@162-7::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/loop@161-6::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveAgent@160::Invoke(Microsoft.FSharp.Control.FSharpMailboxProcessor`1<System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>>>)
+FNDA:0,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessage@177-2::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@181-5::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@181-4::Invoke(System.IO.MemoryStream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.ThreadSafeWebsocket/sendMessageAsUTF8@180-3::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,System.Tuple`4<System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessage@185-1::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@190-5::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@189-4::Invoke(System.IO.MemoryStream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.ThreadSafeWebsocket/receiveMessageAsUTF8@188-3::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/close@194::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FNDA:0,FSharp.Control.Websockets.ThreadSafeWebsocket/SendMessages FSharp.Control.Websockets.ThreadSafeWebsocket/closeOutput@197::Invoke(Microsoft.FSharp.Control.FSharpAsyncReplyChannel`1<Microsoft.FSharp.Core.Unit>)
+FNDA:0,System.Boolean FSharp.Control.Websockets.Websocket::isWebsocketOpen(a)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::sendMessage(System.Int32,System.Net.WebSockets.WebSocketMessageType,a,b)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::sendMessageAsUTF8(System.String,System.Net.WebSockets.WebSocket)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket::receiveMessage(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.IO.Stream,System.Net.WebSockets.WebSocket)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket::receiveMessageAsUTF8(System.Net.WebSockets.WebSocket)
+FNDA:0,System.Threading.Tasks.Task`1<System.Net.WebSockets.WebSocketReceiveResult> FSharp.Control.Websockets.Websocket/asyncReceive@46::Invoke(System.Threading.CancellationToken)
+FNDA:0,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncSend@50::Invoke(System.Threading.CancellationToken)
+FNDA:0,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncClose@54::Invoke(System.Threading.CancellationToken)
+FNDA:0,System.Threading.Tasks.Task FSharp.Control.Websockets.Websocket/asyncCloseOutput@58::Invoke(System.Threading.CancellationToken)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@73-3::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@75-4::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@71-2::Invoke(System.Int32)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@69-1::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage'@68::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage@77-1::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessage@66::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@82-2::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@82-1::Invoke(System.IO.MemoryStream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/sendMessageAsUTF8@81::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@93-3::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@98-5::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@97-4::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@90-2::Invoke(System.Net.WebSockets.WebSocketReceiveResult)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@89-1::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/readTillEnd'@88::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> FSharp.Control.Websockets.Websocket/receiveMessage@86::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@109-2::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@108-1::Invoke(System.IO.MemoryStream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<System.String> FSharp.Control.Websockets.Websocket/receiveMessageAsUTF8@107::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,System.IO.MemoryStream FSharp.Control.Websockets.Stream::MemoryStream.UTF8toMemoryStream.Static(System.String)
+FNDA:0,System.String FSharp.Control.Websockets.Stream::MemoryStream.ToUTF8String.Static(System.IO.MemoryStream)
+FNDA:0,System.String FSharp.Control.Websockets.Stream::MemoryStream.ToUTF8String(System.IO.MemoryStream)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@9-1::Invoke(System.Threading.CancellationToken)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<Microsoft.FSharp.Core.Unit> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@8::Invoke(Microsoft.FSharp.Core.Unit)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<a> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@14-3::Invoke(System.Threading.CancellationToken)
+FNDA:0,Microsoft.FSharp.Control.FSharpAsync`1<a> <StartupCode$FSharp-Control-Websockets>.$FSharp.Control.Websockets/AwaitTaskWithCancellation@13-2::Invoke(Microsoft.FSharp.Core.Unit)
+FNF:72
+FNH:0
+BRDA:144,0,0,-
+BRDA:144,0,1,-
+BRDA:145,2,0,-
+BRDA:145,2,1,-
+BRDA:145,4,0,-
+BRDA:145,4,1,-
+BRDA:163,6,0,-
+BRDA:163,6,1,-
+BRDA:71,8,0,-
+BRDA:71,8,1,-
+BRDA:98,10,0,-
+BRDA:98,10,1,-
+BRDA:90,12,0,-
+BRDA:90,12,1,-
+BRDA:96,14,0,-
+BRDA:96,14,1,-
+BRF:16
+BRH:0
+DA:7,0
+DA:12,0
+DA:141,0
+DA:160,0
+DA:170,0
+DA:177,0
+DA:179,0
+DA:185,0
+DA:187,0
+DA:194,0
+DA:197,0
+DA:134,0
+DA:136,0
+DA:138,0
+DA:132,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:151,0
+DA:152,0
+DA:154,0
+DA:155,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:147,0
+DA:145,0
+DA:151,0
+DA:145,0
+DA:154,0
+DA:144,0
+DA:143,0
+DA:142,0
+DA:158,0
+DA:166,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:163,0
+DA:162,0
+DA:161,0
+DA:168,0
+DA:177,0
+DA:181,0
+DA:180,0
+DA:181,0
+DA:180,0
+DA:185,0
+DA:189,0
+DA:190,0
+DA:188,0
+DA:189,0
+DA:188,0
+DA:194,0
+DA:197,0
+DA:62,0
+DA:65,0
+DA:80,0
+DA:85,0
+DA:106,0
+DA:46,0
+DA:50,0
+DA:54,0
+DA:58,0
+DA:72,0
+DA:73,0
+DA:75,0
+DA:69,0
+DA:71,0
+DA:72,0
+DA:75,0
+DA:69,0
+DA:68,0
+DA:77,0
+DA:66,0
+DA:77,0
+DA:82,0
+DA:81,0
+DA:82,0
+DA:81,0
+DA:93,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:101,0
+DA:97,0
+DA:89,0
+DA:90,0
+DA:93,0
+DA:90,0
+DA:96,0
+DA:96,0
+DA:96,0
+DA:96,0
+DA:89,0
+DA:88,0
+DA:86,0
+DA:103,0
+DA:108,0
+DA:109,0
+DA:107,0
+DA:108,0
+DA:107,0
+DA:21,0
+DA:24,0
+DA:25,0
+DA:30,0
+DA:8,0
+DA:9,0
+DA:8,0
+DA:13,0
+DA:14,0
+DA:13,0
+LH:0
+LF:116
+end_of_record
+:13,0
+DA:14,0
+DA:13,0
+LH:0
+LF:113
+end_of_record

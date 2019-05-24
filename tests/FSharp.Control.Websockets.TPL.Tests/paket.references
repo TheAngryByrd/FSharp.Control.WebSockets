@@ -7,3 +7,4 @@ altcover
 Microsoft.AspNetCore.TestHost
 Microsoft.AspNetCore.WebSockets
 Microsoft.AspNetCore.Server.Kestrel
+System.Threading.Tasks.Dataflow
