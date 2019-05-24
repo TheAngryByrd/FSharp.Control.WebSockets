@@ -2,12 +2,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+        <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
         <!-- <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion> -->
     </PropertyGroup>
     <ItemGroup>
+        <None Include="App.config" />
         <Compile Include="AssemblyInfo.fs" />
-        <Compile Include="Infrastructure.fs" />
+        <Compile Include="../FSharp.Control.Websockets.Tests/Infrastructure.fs" />
         <Compile Include="Tests.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>

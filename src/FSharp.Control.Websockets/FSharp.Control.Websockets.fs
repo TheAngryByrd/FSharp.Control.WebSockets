@@ -35,10 +35,6 @@ module WebSocket =
     open System
     open System.Net.WebSockets
 
-    let (|OneOf|_|) (items: 'a list) (matcher: 'a) =
-        if items |> List.contains matcher then Some () else None
-
-
     /// **Description**
     /// (16 * 1024) = 16384
     /// https://referencesource.microsoft.com/#System/net/System/Net/WebSockets/WebSocketHelpers.cs,285b8b64a4da6851
