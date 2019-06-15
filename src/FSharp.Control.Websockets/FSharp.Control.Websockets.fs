@@ -18,11 +18,8 @@ type Async =
     ///
     /// **Exceptions**
     ///
-    static member AwaitTaskWithCancellation (f: CancellationToken -> Task) : Async<unit> = async {
-        let! ct = Async.CancellationToken
-        return! f ct |> Async.AwaitTask
-    }
-
+    static member AwaitTaskWithCancellation (f: CancellationToken -> Task) : Async<unit> =
+        async.Bind(Async.CancellationToken, f >> Async.AwaitTask)
 
     /// **Description**
     ///
@@ -36,10 +33,8 @@ type Async =
     ///
     /// **Exceptions**
     ///
-    static member AwaitTaskWithCancellation (f: CancellationToken -> Task<'a>) : Async<'a> = async {
-        let! ct = Async.CancellationToken
-        return! f ct |> Async.AwaitTask
-    }
+    static member AwaitTaskWithCancellation (f: CancellationToken -> Task<'a>) : Async<'a> =
+        async.Bind(Async.CancellationToken, f >> Async.AwaitTask)
 
 module Stream =
     open System
@@ -435,7 +430,7 @@ module ThreadSafeWebSocket =
     ///
     /// **Exceptions**
     ///
-    let sendMessage (threadSafeWebSocket : ThreadSafeWebSocket) (bufferSize : int) messageType (readableStream : #IO.Stream) =
+    let sendMessage (threadSafeWebSocket : ThreadSafeWebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (readableStream : #IO.Stream) =
         threadSafeWebSocket.sendChannel.PostAndAsyncReply(fun reply -> Send(bufferSize, messageType, readableStream, reply))
 
 
