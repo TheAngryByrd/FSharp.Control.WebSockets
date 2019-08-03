@@ -74,6 +74,12 @@ module Stream =
             |> Text.Encoding.UTF8.GetString
             |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
 
+        static member ToUTF8String2 (stream : IO.MemoryStream) =
+            stream.Seek(0L,IO.SeekOrigin.Begin) |> ignore //ensure start of stream
+            use sr = new IO.StreamReader(stream, Text.Encoding.UTF8, false, 4096, true)
+            sr.ReadToEnd()
+            |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
+
         /// **Description**
         ///
         /// Turns a `MemoryStream` into a a UTF8 string
@@ -88,6 +94,9 @@ module Stream =
         ///
         member stream.ToUTF8String () =
             stream |> System.IO.MemoryStream.ToUTF8String
+
+        member stream.ToUTF8String2 () =
+            stream |> System.IO.MemoryStream.ToUTF8String2
 
 module WebSocket =
     open Stream
@@ -282,7 +291,7 @@ module WebSocket =
             | result ->
                 // printfn "result.MessageType -> %A" result.MessageType
                 if result.MessageType <> messageType then return ()
-                do! writeableStream.AsyncWrite(buffer.Array, buffer.Offset, result.Count)
+                do! writeableStream.AsyncWrite(buffer.Array, 0, result.Count)
                 if result.EndOfMessage then
                     return Stream writeableStream
                 else

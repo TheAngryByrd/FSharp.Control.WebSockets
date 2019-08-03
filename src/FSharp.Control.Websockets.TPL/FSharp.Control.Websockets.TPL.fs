@@ -256,7 +256,7 @@ module WebSocket =
             | result ->
                 if result.MessageType <> messageType then
                     failwithf "Invalid message type received %A, expected %A" result.MessageType messageType
-                do! writeableStream.WriteAsync(buffer.Array, buffer.Offset, result.Count)
+                do! writeableStream.WriteAsync(buffer.Array, 0, result.Count)
                 if result.EndOfMessage then
                     moreToRead <- false
                     mainResult <- Stream writeableStream
@@ -453,7 +453,7 @@ module ThreadSafeWebSocket =
     ///
     /// **Exceptions**
     ///
-    let receiveMessage (threadSafeWebSocket : ThreadSafeWebSocket)  (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : #IO.Stream) = task {
+    let receiveMessage (threadSafeWebSocket : ThreadSafeWebSocket)  (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : IO.Stream) = task {
         let reply = new TaskCompletionSource<_>()
         let msg = (cancellationToken, bufferSize, messageType, writeableStream, reply)
         let! accepted = threadSafeWebSocket.receiveChannel.SendAsync(msg)

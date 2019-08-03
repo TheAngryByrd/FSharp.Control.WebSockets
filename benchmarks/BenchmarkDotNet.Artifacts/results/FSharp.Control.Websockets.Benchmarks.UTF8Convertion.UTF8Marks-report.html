@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FSharp.Control.Websockets.Benchmarks.UTF8Convertion.UTF8Marks-20190803-120221</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=macOS Mojave 10.14.5 (18F132) [Darwin 18.6.0]
+Intel Core i7-4870HQ CPU 2.50GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.0.100-preview7-012821
+  [Host]    : .NET Core 2.2.5 (CoreCLR 4.6.27617.05, CoreFX 4.6.27618.01), 64bit RyuJIT DEBUG
+  MediumRun : .NET Core 2.2.5 (CoreCLR 4.6.27617.05, CoreFX 4.6.27618.01), 64bit RyuJIT
+</code></pre>
+<pre><code>Job=MediumRun  Runtime=Core  InvocationCount=1  
+IterationCount=15  LaunchCount=2  UnrollFactor=1  
+WarmupCount=10  
+</code></pre>
+
+<table>
+<thead><tr><th>     Method</th><th>dataSize</th><th>   Mean</th><th>  Error</th><th> StdDev</th><th> Median</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>UTFToBytes</td><td>1000</td><td>3.623 us</td><td>0.5697 us</td><td>0.8350 us</td><td>3.317 us</td><td>-</td><td>-</td><td>-</td><td>3.02 KB</td>
+</tr><tr><td>UTFToStreamReader</td><td>1000</td><td>4.993 us</td><td>0.3336 us</td><td>0.4994 us</td><td>4.935 us</td><td>-</td><td>-</td><td>-</td><td>16.28 KB</td>
+</tr><tr><td>UTFToBytes</td><td>20000</td><td>15.700 us</td><td>1.1792 us</td><td>1.7650 us</td><td>15.812 us</td><td>-</td><td>-</td><td>-</td><td>58.69 KB</td>
+</tr><tr><td>UTFToStreamReader</td><td>20000</td><td>19.367 us</td><td>0.7748 us</td><td>1.1112 us</td><td>19.709 us</td><td>-</td><td>-</td><td>-</td><td>98.89 KB</td>
+</tr><tr><td>UTFToBytes</td><td>100000</td><td>61.277 us</td><td>2.5709 us</td><td>3.6872 us</td><td>60.227 us</td><td>-</td><td>-</td><td>-</td><td>293.06 KB</td>
+</tr><tr><td>UTFToStreamReader</td><td>100000</td><td>78.203 us</td><td>3.4074 us</td><td>4.8868 us</td><td>76.045 us</td><td>-</td><td>-</td><td>-</td><td>412.09 KB</td>
+</tr><tr><td>UTFToBytes</td><td>1000000</td><td>897.462 us</td><td>215.0929 us</td><td>321.9409 us</td><td>657.515 us</td><td>-</td><td>-</td><td>-</td><td>2929.78 KB</td>
+</tr><tr><td>UTFToStreamReader</td><td>1000000</td><td>1,162.589 us</td><td>212.5062 us</td><td>318.0692 us</td><td>1,208.514 us</td><td>-</td><td>-</td><td>-</td><td>3927.78 KB</td>
+</tr><tr><td>UTFToBytes</td><td>10000000</td><td>10,598.489 us</td><td>2,421.6387 us</td><td>3,624.5948 us</td><td>8,240.141 us</td><td>-</td><td>-</td><td>-</td><td>29296.97 KB</td>
+</tr><tr><td>UTFToStreamReader</td><td>10000000</td><td>19,871.572 us</td><td>2,242.5016 us</td><td>3,356.4709 us</td><td>18,123.978 us</td><td>3000.0000</td><td>1000.0000</td><td>-</td><td>39163.13 KB</td>
+</tr></tbody></table>
+</body>
+</html>
