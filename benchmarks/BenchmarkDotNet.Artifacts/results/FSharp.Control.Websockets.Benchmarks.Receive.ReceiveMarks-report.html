@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FSharp.Control.Websockets.Benchmarks.Receive.ReceiveMarks-20190615-125832</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=macOS Mojave 10.14.4 (18E226) [Darwin 18.5.0]
+Intel Core i7-4870HQ CPU 2.50GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=2.2.203
+  [Host]    : .NET Core 2.2.5 (CoreCLR 4.6.27617.05, CoreFX 4.6.27618.01), 64bit RyuJIT DEBUG
+  MediumRun : .NET Core 2.2.5 (CoreCLR 4.6.27617.05, CoreFX 4.6.27618.01), 64bit RyuJIT
+</code></pre>
+<pre><code>Job=MediumRun  Runtime=Core  IterationCount=15  
+LaunchCount=2  WarmupCount=10  
+</code></pre>
+
+<table>
+<thead><tr><th>                       Method</th><th>dataSize</th><th>rounds</th><th>    Mean</th><th>   Error</th><th>  StdDev</th><th>  Median</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>TaskReceive</td><td>1</td><td>1</td><td>1.105 us</td><td>0.0501 us</td><td>0.0702 us</td><td>1.092 us</td><td>0.1373</td><td>-</td><td>-</td><td>816 B</td>
+</tr><tr><td>AsyncReceive</td><td>1</td><td>1</td><td>15.822 us</td><td>0.9826 us</td><td>1.4707 us</td><td>15.095 us</td><td>0.6561</td><td>-</td><td>-</td><td>1640 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1</td><td>1</td><td>22.403 us</td><td>0.3054 us</td><td>0.4571 us</td><td>22.153 us</td><td>5.6152</td><td>-</td><td>-</td><td>35176 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1</td><td>1</td><td>69.537 us</td><td>1.8428 us</td><td>2.5834 us</td><td>68.963 us</td><td>7.5684</td><td>0.3662</td><td>-</td><td>1807 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1</td><td>1</td><td>22.944 us</td><td>0.3419 us</td><td>0.4792 us</td><td>22.681 us</td><td>5.7678</td><td>-</td><td>-</td><td>36208 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1</td><td>1</td><td>73.188 us</td><td>1.6280 us</td><td>2.2284 us</td><td>73.305 us</td><td>7.5684</td><td>0.3662</td><td>-</td><td>1562 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1</td><td>1</td><td>74.466 us</td><td>1.4701 us</td><td>2.0609 us</td><td>73.908 us</td><td>7.6904</td><td>0.1221</td><td>-</td><td>5735 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1</td><td>1</td><td>95.133 us</td><td>1.4974 us</td><td>2.1948 us</td><td>94.563 us</td><td>8.6670</td><td>0.3662</td><td>-</td><td>3237 B</td>
+</tr><tr><td>TaskReceive</td><td>1</td><td>15</td><td>8.029 us</td><td>0.2467 us</td><td>0.3693 us</td><td>7.994 us</td><td>0.6409</td><td>0.0076</td><td>-</td><td>3616 B</td>
+</tr><tr><td>AsyncReceive</td><td>1</td><td>15</td><td>125.839 us</td><td>2.6498 us</td><td>3.9662 us</td><td>125.842 us</td><td>4.3945</td><td>-</td><td>-</td><td>1692 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1</td><td>15</td><td>176.994 us</td><td>2.1756 us</td><td>3.0499 us</td><td>175.762 us</td><td>43.9453</td><td>-</td><td>-</td><td>275752 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1</td><td>15</td><td>414.004 us</td><td>10.9354 us</td><td>16.3676 us</td><td>410.522 us</td><td>60.0586</td><td>2.9297</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1</td><td>15</td><td>181.062 us</td><td>2.5450 us</td><td>3.5678 us</td><td>179.543 us</td><td>45.6543</td><td>-</td><td>-</td><td>287088 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1</td><td>15</td><td>448.258 us</td><td>11.4246 us</td><td>17.0997 us</td><td>442.971 us</td><td>59.5703</td><td>2.9297</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1</td><td>15</td><td>341.153 us</td><td>9.1166 us</td><td>13.6452 us</td><td>337.320 us</td><td>51.2695</td><td>0.9766</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1</td><td>15</td><td>581.207 us</td><td>18.3528 us</td><td>27.4696 us</td><td>572.454 us</td><td>63.4766</td><td>2.9297</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>1</td><td>100</td><td>49.803 us</td><td>1.6949 us</td><td>2.5368 us</td><td>49.060 us</td><td>3.7231</td><td>0.0610</td><td>-</td><td>20616 B</td>
+</tr><tr><td>AsyncReceive</td><td>1</td><td>100</td><td>682.979 us</td><td>23.4872 us</td><td>35.1546 us</td><td>676.555 us</td><td>26.3672</td><td>-</td><td>-</td><td>1704 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1</td><td>100</td><td>1,114.653 us</td><td>18.5655 us</td><td>26.0262 us</td><td>1,107.408 us</td><td>275.3906</td><td>-</td><td>-</td><td>1736392 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1</td><td>100</td><td>2,453.921 us</td><td>79.4845 us</td><td>118.9687 us</td><td>2,404.030 us</td><td>375.0000</td><td>15.6250</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1</td><td>100</td><td>1,150.808 us</td><td>13.1428 us</td><td>17.9901 us</td><td>1,144.655 us</td><td>287.1094</td><td>-</td><td>-</td><td>1810288 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1</td><td>100</td><td>2,597.444 us</td><td>66.0502 us</td><td>92.5932 us</td><td>2,578.050 us</td><td>375.0000</td><td>15.6250</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1</td><td>100</td><td>1,747.500 us</td><td>29.5802 us</td><td>44.2742 us</td><td>1,739.319 us</td><td>316.4063</td><td>7.8125</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1</td><td>100</td><td>3,264.510 us</td><td>38.2457 us</td><td>54.8509 us</td><td>3,268.034 us</td><td>398.4375</td><td>19.5313</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>1</td><td>1000</td><td>463.730 us</td><td>6.3318 us</td><td>9.4771 us</td><td>463.547 us</td><td>36.1328</td><td>0.4883</td><td>-</td><td>200616 B</td>
+</tr><tr><td>AsyncReceive</td><td>1</td><td>1000</td><td>6,141.267 us</td><td>147.2491 us</td><td>215.8358 us</td><td>6,119.796 us</td><td>265.6250</td><td>-</td><td>-</td><td>1710 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1</td><td>1000</td><td>10,857.307 us</td><td>28.4483 us</td><td>39.8805 us</td><td>10,862.564 us</td><td>2734.3750</td><td>-</td><td>-</td><td>17205648 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1</td><td>1000</td><td>22,819.868 us</td><td>351.0681 us</td><td>514.5911 us</td><td>22,716.411 us</td><td>3750.0000</td><td>187.5000</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1</td><td>1000</td><td>11,165.783 us</td><td>60.3780 us</td><td>90.3709 us</td><td>11,123.377 us</td><td>2859.3750</td><td>-</td><td>-</td><td>17938288 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1</td><td>1000</td><td>25,013.664 us</td><td>325.9602 us</td><td>487.8819 us</td><td>24,927.322 us</td><td>3718.7500</td><td>156.2500</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1</td><td>1000</td><td>16,147.988 us</td><td>283.6377 us</td><td>415.7525 us</td><td>16,021.979 us</td><td>3125.0000</td><td>31.2500</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1</td><td>1000</td><td>31,362.316 us</td><td>382.4557 us</td><td>548.5066 us</td><td>31,453.929 us</td><td>3937.5000</td><td>187.5000</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>15</td><td>1</td><td>1.299 us</td><td>0.0228 us</td><td>0.0341 us</td><td>1.292 us</td><td>0.1392</td><td>-</td><td>-</td><td>824 B</td>
+</tr><tr><td>AsyncReceive</td><td>15</td><td>1</td><td>15.981 us</td><td>0.3137 us</td><td>0.4598 us</td><td>15.851 us</td><td>0.6409</td><td>-</td><td>-</td><td>1648 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>15</td><td>1</td><td>22.480 us</td><td>0.1003 us</td><td>0.1406 us</td><td>22.458 us</td><td>5.6152</td><td>-</td><td>-</td><td>35176 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>15</td><td>1</td><td>69.298 us</td><td>1.2007 us</td><td>1.7971 us</td><td>69.460 us</td><td>7.5684</td><td>0.3662</td><td>-</td><td>1807 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>15</td><td>1</td><td>23.076 us</td><td>0.0986 us</td><td>0.1445 us</td><td>23.081 us</td><td>5.7678</td><td>-</td><td>-</td><td>36288 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>15</td><td>1</td><td>74.795 us</td><td>1.7911 us</td><td>2.6808 us</td><td>74.809 us</td><td>7.5684</td><td>0.2441</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>15</td><td>1</td><td>75.294 us</td><td>0.8633 us</td><td>1.2922 us</td><td>75.047 us</td><td>7.6904</td><td>0.1221</td><td>-</td><td>5740 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>15</td><td>1</td><td>94.240 us</td><td>0.7820 us</td><td>1.1215 us</td><td>93.950 us</td><td>8.6670</td><td>0.3662</td><td>-</td><td>3220 B</td>
+</tr><tr><td>TaskReceive</td><td>15</td><td>15</td><td>8.761 us</td><td>0.1191 us</td><td>0.1746 us</td><td>8.745 us</td><td>0.6409</td><td>-</td><td>-</td><td>3624 B</td>
+</tr><tr><td>AsyncReceive</td><td>15</td><td>15</td><td>126.523 us</td><td>1.6036 us</td><td>2.3505 us</td><td>126.466 us</td><td>4.3945</td><td>-</td><td>-</td><td>1708 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>15</td><td>15</td><td>176.202 us</td><td>0.6649 us</td><td>0.9746 us</td><td>175.748 us</td><td>43.9453</td><td>-</td><td>-</td><td>275752 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>15</td><td>15</td><td>403.301 us</td><td>8.4823 us</td><td>12.6959 us</td><td>401.948 us</td><td>59.5703</td><td>2.9297</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>15</td><td>15</td><td>182.858 us</td><td>0.3927 us</td><td>0.5506 us</td><td>182.771 us</td><td>45.8984</td><td>-</td><td>-</td><td>287728 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>15</td><td>15</td><td>443.985 us</td><td>6.7389 us</td><td>10.0865 us</td><td>440.160 us</td><td>60.0586</td><td>2.9297</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>15</td><td>15</td><td>333.569 us</td><td>4.8738 us</td><td>7.2948 us</td><td>334.174 us</td><td>51.7578</td><td>1.4648</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>15</td><td>15</td><td>570.504 us</td><td>11.4495 us</td><td>17.1370 us</td><td>565.781 us</td><td>63.4766</td><td>2.9297</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>15</td><td>100</td><td>54.094 us</td><td>0.8178 us</td><td>1.2240 us</td><td>54.027 us</td><td>3.7231</td><td>0.0610</td><td>-</td><td>20624 B</td>
+</tr><tr><td>AsyncReceive</td><td>15</td><td>100</td><td>688.100 us</td><td>17.4868 us</td><td>25.6319 us</td><td>686.591 us</td><td>27.3438</td><td>-</td><td>-</td><td>1712 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>15</td><td>100</td><td>1,115.460 us</td><td>3.1630 us</td><td>4.5362 us</td><td>1,113.953 us</td><td>277.3438</td><td>3.9063</td><td>-</td><td>1740048 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>15</td><td>100</td><td>2,412.327 us</td><td>24.9398 us</td><td>35.7679 us</td><td>2,416.192 us</td><td>375.0000</td><td>19.5313</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>15</td><td>100</td><td>1,151.897 us</td><td>4.4582 us</td><td>6.1024 us</td><td>1,152.805 us</td><td>289.0625</td><td>1.9531</td><td>-</td><td>1814328 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>15</td><td>100</td><td>2,830.543 us</td><td>131.0495 us</td><td>192.0906 us</td><td>2,815.526 us</td><td>378.9063</td><td>15.6250</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>15</td><td>100</td><td>1,752.544 us</td><td>22.6859 us</td><td>33.9552 us</td><td>1,751.542 us</td><td>316.4063</td><td>9.7656</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>15</td><td>100</td><td>3,316.213 us</td><td>45.7182 us</td><td>68.4288 us</td><td>3,310.554 us</td><td>398.4375</td><td>19.5313</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>15</td><td>1000</td><td>529.916 us</td><td>9.0851 us</td><td>13.3168 us</td><td>528.929 us</td><td>36.1328</td><td>-</td><td>-</td><td>200624 B</td>
+</tr><tr><td>AsyncReceive</td><td>15</td><td>1000</td><td>6,362.801 us</td><td>107.1930 us</td><td>157.1222 us</td><td>6,358.736 us</td><td>265.6250</td><td>7.8125</td><td>-</td><td>1712 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>15</td><td>1000</td><td>11,148.820 us</td><td>47.7959 us</td><td>68.5475 us</td><td>11,121.488 us</td><td>2750.0000</td><td>78.1250</td><td>-</td><td>17234392 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>15</td><td>1000</td><td>23,227.972 us</td><td>207.4984 us</td><td>310.5739 us</td><td>23,244.272 us</td><td>3718.7500</td><td>250.0000</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>15</td><td>1000</td><td>11,484.287 us</td><td>50.7907 us</td><td>72.8425 us</td><td>11,452.603 us</td><td>2859.3750</td><td>15.6250</td><td>-</td><td>17978328 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>15</td><td>1000</td><td>25,582.746 us</td><td>396.7242 us</td><td>581.5131 us</td><td>25,525.151 us</td><td>3718.7500</td><td>156.2500</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>15</td><td>1000</td><td>16,724.560 us</td><td>279.9746 us</td><td>419.0528 us</td><td>16,761.365 us</td><td>3093.7500</td><td>31.2500</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>15</td><td>1000</td><td>31,881.235 us</td><td>399.8154 us</td><td>598.4249 us</td><td>31,932.793 us</td><td>3937.5000</td><td>156.2500</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>100</td><td>1</td><td>1.979 us</td><td>0.0220 us</td><td>0.0329 us</td><td>1.979 us</td><td>0.1545</td><td>-</td><td>-</td><td>912 B</td>
+</tr><tr><td>AsyncReceive</td><td>100</td><td>1</td><td>18.816 us</td><td>0.6671 us</td><td>0.9984 us</td><td>18.428 us</td><td>0.6714</td><td>-</td><td>-</td><td>1738 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>100</td><td>1</td><td>23.615 us</td><td>0.0806 us</td><td>0.1182 us</td><td>23.607 us</td><td>5.6152</td><td>-</td><td>-</td><td>35176 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>100</td><td>1</td><td>75.798 us</td><td>3.4661 us</td><td>5.1879 us</td><td>74.190 us</td><td>7.5684</td><td>0.3662</td><td>-</td><td>1806 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>100</td><td>1</td><td>24.849 us</td><td>0.2769 us</td><td>0.3882 us</td><td>24.742 us</td><td>5.8594</td><td>0.0610</td><td>-</td><td>36800 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>100</td><td>1</td><td>78.959 us</td><td>2.1974 us</td><td>3.2209 us</td><td>78.359 us</td><td>7.5684</td><td>0.2441</td><td>-</td><td>1566 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>100</td><td>1</td><td>80.309 us</td><td>1.2300 us</td><td>1.8029 us</td><td>80.237 us</td><td>7.8125</td><td>0.1221</td><td>-</td><td>5737 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>100</td><td>1</td><td>100.421 us</td><td>1.4008 us</td><td>2.0966 us</td><td>100.682 us</td><td>8.7891</td><td>0.3662</td><td>-</td><td>3223 B</td>
+</tr><tr><td>TaskReceive</td><td>100</td><td>15</td><td>13.784 us</td><td>0.3184 us</td><td>0.4766 us</td><td>13.632 us</td><td>0.6561</td><td>0.0153</td><td>-</td><td>3712 B</td>
+</tr><tr><td>AsyncReceive</td><td>100</td><td>15</td><td>151.943 us</td><td>3.9233 us</td><td>5.5000 us</td><td>149.988 us</td><td>4.3945</td><td>-</td><td>-</td><td>1781 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>100</td><td>15</td><td>190.027 us</td><td>1.9166 us</td><td>2.7487 us</td><td>189.512 us</td><td>44.6777</td><td>0.4883</td><td>-</td><td>279408 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>100</td><td>15</td><td>445.958 us</td><td>10.7666 us</td><td>16.1150 us</td><td>438.331 us</td><td>60.0586</td><td>3.4180</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>100</td><td>15</td><td>198.081 us</td><td>2.9409 us</td><td>4.4018 us</td><td>195.455 us</td><td>46.3867</td><td>0.7324</td><td>-</td><td>291824 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>100</td><td>15</td><td>475.787 us</td><td>11.7423 us</td><td>16.8405 us</td><td>472.735 us</td><td>61.0352</td><td>3.4180</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>100</td><td>15</td><td>361.719 us</td><td>9.4832 us</td><td>14.1940 us</td><td>357.095 us</td><td>51.7578</td><td>1.4648</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>100</td><td>15</td><td>616.769 us</td><td>20.0792 us</td><td>30.0535 us</td><td>606.027 us</td><td>64.4531</td><td>2.9297</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>100</td><td>100</td><td>86.747 us</td><td>2.5249 us</td><td>3.5395 us</td><td>88.598 us</td><td>3.6621</td><td>-</td><td>-</td><td>20712 B</td>
+</tr><tr><td>AsyncReceive</td><td>100</td><td>100</td><td>789.323 us</td><td>23.3266 us</td><td>32.7007 us</td><td>786.864 us</td><td>27.3438</td><td>-</td><td>-</td><td>1800 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>100</td><td>100</td><td>1,197.899 us</td><td>11.2376 us</td><td>15.3822 us</td><td>1,190.440 us</td><td>281.2500</td><td>19.5313</td><td>-</td><td>1768792 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>100</td><td>100</td><td>2,653.956 us</td><td>72.6580 us</td><td>99.4551 us</td><td>2,637.688 us</td><td>378.9063</td><td>39.0625</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>100</td><td>100</td><td>1,237.676 us</td><td>13.7894 us</td><td>18.8751 us</td><td>1,228.736 us</td><td>292.9688</td><td>-</td><td>-</td><td>1840184 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>100</td><td>100</td><td>2,904.984 us</td><td>78.4840 us</td><td>115.0408 us</td><td>2,860.854 us</td><td>382.8125</td><td>19.5313</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>100</td><td>100</td><td>1,931.263 us</td><td>44.4560 us</td><td>66.5397 us</td><td>1,910.840 us</td><td>320.3125</td><td>9.7656</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>100</td><td>100</td><td>3,585.456 us</td><td>113.5954 us</td><td>170.0242 us</td><td>3,531.658 us</td><td>402.3438</td><td>19.5313</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>100</td><td>1000</td><td>846.610 us</td><td>22.2098 us</td><td>33.2426 us</td><td>835.870 us</td><td>36.1328</td><td>-</td><td>-</td><td>200712 B</td>
+</tr><tr><td>AsyncReceive</td><td>100</td><td>1000</td><td>7,505.071 us</td><td>289.5626 us</td><td>433.4037 us</td><td>7,428.655 us</td><td>265.6250</td><td>-</td><td>-</td><td>1800 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>100</td><td>1000</td><td>11,754.812 us</td><td>46.6745 us</td><td>69.8601 us</td><td>11,742.924 us</td><td>2765.6250</td><td>234.3750</td><td>31.2500</td><td>17463840 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>100</td><td>1000</td><td>25,055.699 us</td><td>291.2964 us</td><td>435.9987 us</td><td>24,945.320 us</td><td>3718.7500</td><td>437.5000</td><td>31.2500</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>100</td><td>1000</td><td>12,155.488 us</td><td>32.5893 us</td><td>46.7385 us</td><td>12,156.888 us</td><td>2906.2500</td><td>15.6250</td><td>-</td><td>18234584 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>100</td><td>1000</td><td>27,335.719 us</td><td>461.6760 us</td><td>691.0149 us</td><td>27,243.443 us</td><td>3812.5000</td><td>187.5000</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>100</td><td>1000</td><td>17,886.931 us</td><td>259.7509 us</td><td>388.7829 us</td><td>17,988.470 us</td><td>3156.2500</td><td>31.2500</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>100</td><td>1000</td><td>33,943.060 us</td><td>490.1119 us</td><td>733.5764 us</td><td>33,655.460 us</td><td>4000.0000</td><td>187.5000</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>1000</td><td>1</td><td>5.470 us</td><td>0.0424 us</td><td>0.0608 us</td><td>5.480 us</td><td>0.2975</td><td>-</td><td>-</td><td>1808 B</td>
+</tr><tr><td>AsyncReceive</td><td>1000</td><td>1</td><td>33.819 us</td><td>0.9738 us</td><td>1.4576 us</td><td>33.705 us</td><td>0.7935</td><td>-</td><td>-</td><td>2660 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1000</td><td>1</td><td>30.436 us</td><td>0.2196 us</td><td>0.3219 us</td><td>30.451 us</td><td>6.0425</td><td>0.1221</td><td>-</td><td>37960 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1000</td><td>1</td><td>86.658 us</td><td>1.0260 us</td><td>1.4382 us</td><td>87.296 us</td><td>7.6904</td><td>0.3662</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1000</td><td>1</td><td>32.543 us</td><td>0.1532 us</td><td>0.2293 us</td><td>32.468 us</td><td>6.9580</td><td>0.0610</td><td>-</td><td>43712 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1000</td><td>1</td><td>94.235 us</td><td>1.0994 us</td><td>1.6455 us</td><td>93.784 us</td><td>8.4229</td><td>0.4883</td><td>-</td><td>1567 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1000</td><td>1</td><td>97.080 us</td><td>1.3481 us</td><td>1.9335 us</td><td>96.554 us</td><td>8.7891</td><td>0.3662</td><td>-</td><td>5743 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1000</td><td>1</td><td>116.656 us</td><td>0.5108 us</td><td>0.7487 us</td><td>116.656 us</td><td>10.0098</td><td>0.6104</td><td>-</td><td>3230 B</td>
+</tr><tr><td>TaskReceive</td><td>1000</td><td>15</td><td>36.907 us</td><td>0.4572 us</td><td>0.6843 us</td><td>37.026 us</td><td>0.7935</td><td>-</td><td>-</td><td>4608 B</td>
+</tr><tr><td>AsyncReceive</td><td>1000</td><td>15</td><td>192.108 us</td><td>3.9936 us</td><td>5.8537 us</td><td>189.992 us</td><td>4.6387</td><td>-</td><td>-</td><td>2696 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1000</td><td>15</td><td>242.760 us</td><td>1.0554 us</td><td>1.5470 us</td><td>242.527 us</td><td>49.0723</td><td>3.4180</td><td>-</td><td>306640 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1000</td><td>15</td><td>531.435 us</td><td>5.9789 us</td><td>8.7638 us</td><td>532.429 us</td><td>64.4531</td><td>5.8594</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1000</td><td>15</td><td>257.891 us</td><td>0.9127 us</td><td>1.3661 us</td><td>257.370 us</td><td>55.1758</td><td>0.4883</td><td>-</td><td>347120 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1000</td><td>15</td><td>591.261 us</td><td>7.3037 us</td><td>10.7057 us</td><td>588.993 us</td><td>65.4297</td><td>3.9063</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1000</td><td>15</td><td>439.251 us</td><td>7.2391 us</td><td>10.8351 us</td><td>439.911 us</td><td>61.0352</td><td>2.9297</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1000</td><td>15</td><td>714.337 us</td><td>10.3158 us</td><td>15.4402 us</td><td>712.190 us</td><td>74.2188</td><td>4.8828</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>1000</td><td>100</td><td>227.282 us</td><td>2.8826 us</td><td>4.3145 us</td><td>226.955 us</td><td>3.9063</td><td>-</td><td>-</td><td>21608 B</td>
+</tr><tr><td>AsyncReceive</td><td>1000</td><td>100</td><td>1,051.629 us</td><td>18.6689 us</td><td>27.9427 us</td><td>1,048.893 us</td><td>27.3438</td><td>-</td><td>-</td><td>2696 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1000</td><td>100</td><td>1,635.804 us</td><td>7.7663 us</td><td>11.1382 us</td><td>1,635.896 us</td><td>318.3594</td><td>39.0625</td><td>39.0625</td><td>1991576 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1000</td><td>100</td><td>3,394.099 us</td><td>47.8515 us</td><td>71.6219 us</td><td>3,365.976 us</td><td>398.4375</td><td>58.5938</td><td>39.0625</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1000</td><td>100</td><td>1,632.821 us</td><td>5.9928 us</td><td>8.5948 us</td><td>1,630.289 us</td><td>349.6094</td><td>1.9531</td><td>-</td><td>2189240 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1000</td><td>100</td><td>3,460.035 us</td><td>68.2284 us</td><td>102.1211 us</td><td>3,453.053 us</td><td>414.0625</td><td>27.3438</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1000</td><td>100</td><td>2,571.311 us</td><td>82.2171 us</td><td>120.5127 us</td><td>2,559.898 us</td><td>375.0000</td><td>19.5313</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1000</td><td>100</td><td>4,341.007 us</td><td>71.3292 us</td><td>106.7622 us</td><td>4,334.699 us</td><td>460.9375</td><td>31.2500</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>1000</td><td>1000</td><td>2,255.239 us</td><td>30.0106 us</td><td>44.9185 us</td><td>2,261.104 us</td><td>35.1563</td><td>-</td><td>-</td><td>201608 B</td>
+</tr><tr><td>AsyncReceive</td><td>1000</td><td>1000</td><td>10,496.340 us</td><td>303.0731 us</td><td>424.8661 us</td><td>10,422.022 us</td><td>265.6250</td><td>-</td><td>-</td><td>2696 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>1000</td><td>1000</td><td>15,411.763 us</td><td>119.2936 us</td><td>174.8590 us</td><td>15,349.523 us</td><td>3250.0000</td><td>593.7500</td><td>500.0000</td><td>19253346 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>1000</td><td>1000</td><td>32,915.374 us</td><td>380.4454 us</td><td>569.4327 us</td><td>32,718.384 us</td><td>4187.5000</td><td>937.5000</td><td>500.0000</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>1000</td><td>1000</td><td>16,320.566 us</td><td>102.9944 us</td><td>147.7115 us</td><td>16,290.100 us</td><td>3437.5000</td><td>31.2500</td><td>-</td><td>21694040 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>1000</td><td>1000</td><td>35,274.851 us</td><td>634.9583 us</td><td>950.3757 us</td><td>35,126.058 us</td><td>4062.5000</td><td>187.5000</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>1000</td><td>1000</td><td>23,704.446 us</td><td>289.7411 us</td><td>433.6709 us</td><td>23,758.492 us</td><td>3718.7500</td><td>93.7500</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>1000</td><td>1000</td><td>42,383.217 us</td><td>584.3566 us</td><td>874.6374 us</td><td>42,090.496 us</td><td>4538.4615</td><td>230.7692</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>16384</td><td>1</td><td>51.399 us</td><td>0.5363 us</td><td>0.7861 us</td><td>51.399 us</td><td>2.8076</td><td>-</td><td>-</td><td>17192 B</td>
+</tr><tr><td>AsyncReceive</td><td>16384</td><td>1</td><td>113.782 us</td><td>1.5959 us</td><td>2.3886 us</td><td>113.707 us</td><td>3.5400</td><td>-</td><td>-</td><td>18080 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>16384</td><td>1</td><td>117.135 us</td><td>1.3082 us</td><td>1.7907 us</td><td>117.350 us</td><td>24.0479</td><td>4.7607</td><td>-</td><td>150296 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>16384</td><td>1</td><td>232.875 us</td><td>4.0198 us</td><td>6.0167 us</td><td>231.909 us</td><td>26.6113</td><td>5.3711</td><td>-</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>16384</td><td>1</td><td>143.492 us</td><td>2.0162 us</td><td>3.0178 us</td><td>142.896 us</td><td>37.3535</td><td>4.1504</td><td>-</td><td>232992 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>16384</td><td>1</td><td>269.103 us</td><td>3.8790 us</td><td>5.8059 us</td><td>268.951 us</td><td>39.5508</td><td>8.7891</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>16384</td><td>1</td><td>248.432 us</td><td>4.2479 us</td><td>6.3581 us</td><td>249.122 us</td><td>39.3066</td><td>7.5684</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>16384</td><td>1</td><td>315.606 us</td><td>4.0763 us</td><td>5.8461 us</td><td>315.919 us</td><td>41.9922</td><td>8.7891</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>16384</td><td>15</td><td>332.772 us</td><td>4.7664 us</td><td>7.1341 us</td><td>333.418 us</td><td>3.4180</td><td>-</td><td>-</td><td>19992 B</td>
+</tr><tr><td>AsyncReceive</td><td>16384</td><td>15</td><td>642.345 us</td><td>17.6504 us</td><td>26.4182 us</td><td>632.221 us</td><td>7.8125</td><td>-</td><td>-</td><td>18080 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>16384</td><td>15</td><td>1,400.041 us</td><td>13.0899 us</td><td>19.5923 us</td><td>1,397.633 us</td><td>285.1563</td><td>285.1563</td><td>285.1563</td><td>1312928 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>16384</td><td>15</td><td>2,318.807 us</td><td>34.4141 us</td><td>51.5094 us</td><td>2,315.569 us</td><td>285.1563</td><td>285.1563</td><td>285.1563</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>16384</td><td>15</td><td>1,135.861 us</td><td>14.4638 us</td><td>20.7435 us</td><td>1,137.606 us</td><td>296.8750</td><td>35.1563</td><td>-</td><td>1861360 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>16384</td><td>15</td><td>1,875.929 us</td><td>34.7404 us</td><td>50.9220 us</td><td>1,863.262 us</td><td>316.4063</td><td>78.1250</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>16384</td><td>15</td><td>1,509.316 us</td><td>21.8206 us</td><td>31.2944 us</td><td>1,513.146 us</td><td>304.6875</td><td>72.2656</td><td>-</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>16384</td><td>15</td><td>2,276.057 us</td><td>40.5356 us</td><td>60.6718 us</td><td>2,268.594 us</td><td>332.0313</td><td>78.1250</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>16384</td><td>100</td><td>2,021.391 us</td><td>56.4534 us</td><td>84.4968 us</td><td>1,988.977 us</td><td>7.8125</td><td>-</td><td>-</td><td>36992 B</td>
+</tr><tr><td>AsyncReceive</td><td>16384</td><td>100</td><td>3,654.426 us</td><td>112.4994 us</td><td>168.3838 us</td><td>3,588.525 us</td><td>31.2500</td><td>-</td><td>-</td><td>18080 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>16384</td><td>100</td><td>6,477.289 us</td><td>97.2973 us</td><td>139.5409 us</td><td>6,481.794 us</td><td>1328.1250</td><td>1000.0000</td><td>992.1875</td><td>5951456 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>16384</td><td>100</td><td>11,419.535 us</td><td>202.0561 us</td><td>302.4281 us</td><td>11,417.723 us</td><td>1421.8750</td><td>1000.0000</td><td>984.3750</td><td>2061 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>16384</td><td>100</td><td>7,098.554 us</td><td>132.9401 us</td><td>198.9785 us</td><td>7,074.182 us</td><td>1882.8125</td><td>226.5625</td><td>-</td><td>11747880 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>16384</td><td>100</td><td>11,300.304 us</td><td>204.3160 us</td><td>305.8105 us</td><td>11,296.788 us</td><td>1984.3750</td><td>453.1250</td><td>15.6250</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>16384</td><td>100</td><td>9,300.985 us</td><td>140.5849 us</td><td>210.4209 us</td><td>9,283.296 us</td><td>1906.2500</td><td>421.8750</td><td>15.6250</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>16384</td><td>100</td><td>13,571.027 us</td><td>234.3344 us</td><td>350.7407 us</td><td>13,507.089 us</td><td>2093.7500</td><td>437.5000</td><td>15.6250</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>16384</td><td>1000</td><td>20,046.276 us</td><td>301.4869 us</td><td>451.2513 us</td><td>20,083.421 us</td><td>62.5000</td><td>-</td><td>-</td><td>216992 B</td>
+</tr><tr><td>AsyncReceive</td><td>16384</td><td>1000</td><td>35,882.501 us</td><td>1,107.9542 us</td><td>1,658.3336 us</td><td>35,499.086 us</td><td>266.6667</td><td>-</td><td>-</td><td>18080 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>16384</td><td>1000</td><td>65,335.090 us</td><td>407.6651 us</td><td>597.5503 us</td><td>65,416.213 us</td><td>4625.0000</td><td>1750.0000</td><td>1750.0000</td><td>51065013 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>16384</td><td>1000</td><td>114,183.785 us</td><td>2,284.0477 us</td><td>3,418.6550 us</td><td>113,619.666 us</td><td>5600.0000</td><td>2400.0000</td><td>1800.0000</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>16384</td><td>1000</td><td>70,091.236 us</td><td>804.2286 us</td><td>1,203.7315 us</td><td>69,834.081 us</td><td>18625.0000</td><td>2125.0000</td><td>-</td><td>116428680 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>16384</td><td>1000</td><td>113,010.612 us</td><td>3,008.3890 us</td><td>4,502.8150 us</td><td>113,535.965 us</td><td>19666.6667</td><td>3833.3333</td><td>-</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>16384</td><td>1000</td><td>91,930.911 us</td><td>1,489.5683 us</td><td>2,229.5157 us</td><td>91,656.137 us</td><td>18857.1429</td><td>3428.5714</td><td>-</td><td>5717 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>16384</td><td>1000</td><td>134,771.673 us</td><td>2,501.3469 us</td><td>3,743.8983 us</td><td>133,806.321 us</td><td>20800.0000</td><td>3600.0000</td><td>-</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>65536</td><td>1</td><td>176.637 us</td><td>2.2158 us</td><td>3.3166 us</td><td>176.400 us</td><td>10.7422</td><td>0.4883</td><td>-</td><td>66344 B</td>
+</tr><tr><td>AsyncReceive</td><td>65536</td><td>1</td><td>257.237 us</td><td>1.9831 us</td><td>2.8441 us</td><td>256.345 us</td><td>11.4746</td><td>0.2441</td><td>-</td><td>67232 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>65536</td><td>1</td><td>551.166 us</td><td>3.9470 us</td><td>5.9076 us</td><td>549.980 us</td><td>124.0234</td><td>124.0234</td><td>124.0234</td><td>545480 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>65536</td><td>1</td><td>823.062 us</td><td>10.4422 us</td><td>15.6293 us</td><td>818.855 us</td><td>124.0234</td><td>124.0234</td><td>124.0234</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>65536</td><td>1</td><td>750.854 us</td><td>3.7665 us</td><td>5.4018 us</td><td>749.417 us</td><td>166.0156</td><td>166.0156</td><td>166.0156</td><td>923136 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>65536</td><td>1</td><td>1,022.536 us</td><td>24.9239 us</td><td>37.3048 us</td><td>1,027.707 us</td><td>166.0156</td><td>166.0156</td><td>166.0156</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>65536</td><td>1</td><td>890.047 us</td><td>8.7584 us</td><td>13.1092 us</td><td>887.295 us</td><td>166.0156</td><td>166.0156</td><td>166.0156</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>65536</td><td>1</td><td>1,078.448 us</td><td>29.9742 us</td><td>44.8639 us</td><td>1,086.300 us</td><td>166.0156</td><td>166.0156</td><td>166.0156</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>65536</td><td>15</td><td>1,116.166 us</td><td>19.5245 us</td><td>29.2233 us</td><td>1,115.694 us</td><td>11.7188</td><td>-</td><td>-</td><td>69144 B</td>
+</tr><tr><td>AsyncReceive</td><td>65536</td><td>15</td><td>1,661.197 us</td><td>25.0869 us</td><td>37.5489 us</td><td>1,657.018 us</td><td>15.6250</td><td>-</td><td>-</td><td>67232 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>65536</td><td>15</td><td>4,367.720 us</td><td>60.1980 us</td><td>90.1015 us</td><td>4,373.339 us</td><td>1085.9375</td><td>1007.8125</td><td>992.1875</td><td>4480115 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>65536</td><td>15</td><td>6,375.109 us</td><td>69.9778 us</td><td>100.3600 us</td><td>6,363.016 us</td><td>1101.5625</td><td>1007.8125</td><td>992.1875</td><td>1871 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>65536</td><td>15</td><td>6,045.144 us</td><td>27.3470 us</td><td>40.0848 us</td><td>6,039.136 us</td><td>1328.1250</td><td>1328.1250</td><td>1328.1250</td><td>7382512 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>65536</td><td>15</td><td>8,101.900 us</td><td>118.9123 us</td><td>170.5405 us</td><td>8,066.850 us</td><td>1328.1250</td><td>1328.1250</td><td>1328.1250</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>65536</td><td>15</td><td>6,509.329 us</td><td>54.0686 us</td><td>80.9273 us</td><td>6,503.245 us</td><td>1328.1250</td><td>1328.1250</td><td>1328.1250</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>65536</td><td>15</td><td>8,757.825 us</td><td>168.6835 us</td><td>252.4776 us</td><td>8,754.594 us</td><td>1328.1250</td><td>1328.1250</td><td>1328.1250</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>65536</td><td>100</td><td>6,749.808 us</td><td>93.5668 us</td><td>140.0464 us</td><td>6,728.054 us</td><td>23.4375</td><td>-</td><td>-</td><td>86144 B</td>
+</tr><tr><td>AsyncReceive</td><td>65536</td><td>100</td><td>10,262.930 us</td><td>205.0269 us</td><td>306.8746 us</td><td>10,218.765 us</td><td>46.8750</td><td>-</td><td>-</td><td>67232 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>65536</td><td>100</td><td>25,382.467 us</td><td>252.5816 us</td><td>378.0523 us</td><td>25,306.311 us</td><td>1437.5000</td><td>1093.7500</td><td>1093.7500</td><td>18627688 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>65536</td><td>100</td><td>35,965.531 us</td><td>589.8741 us</td><td>882.8958 us</td><td>36,038.940 us</td><td>1600.0000</td><td>1133.3333</td><td>1066.6667</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>65536</td><td>100</td><td>38,141.599 us</td><td>398.0682 us</td><td>595.8097 us</td><td>37,983.276 us</td><td>8384.6154</td><td>8384.6154</td><td>8384.6154</td><td>46600152 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>65536</td><td>100</td><td>50,189.568 us</td><td>528.1146 us</td><td>757.4062 us</td><td>50,013.386 us</td><td>8363.6364</td><td>8363.6364</td><td>8363.6364</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>65536</td><td>100</td><td>39,846.692 us</td><td>367.3819 us</td><td>538.5037 us</td><td>39,969.579 us</td><td>8333.3333</td><td>8333.3333</td><td>8333.3333</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>65536</td><td>100</td><td>53,533.227 us</td><td>459.7730 us</td><td>644.5375 us</td><td>53,529.160 us</td><td>8400.0000</td><td>8400.0000</td><td>8400.0000</td><td>3240 B</td>
+</tr><tr><td>TaskReceive</td><td>65536</td><td>1000</td><td>66,709.254 us</td><td>1,125.6563 us</td><td>1,649.9725 us</td><td>66,838.281 us</td><td>142.8571</td><td>-</td><td>-</td><td>266144 B</td>
+</tr><tr><td>AsyncReceive</td><td>65536</td><td>1000</td><td>99,747.412 us</td><td>1,719.7901 us</td><td>2,574.1009 us</td><td>99,504.144 us</td><td>333.3333</td><td>-</td><td>-</td><td>67232 B</td>
+</tr><tr><td>TaskReceiveMessageStream</td><td>65536</td><td>1000</td><td>240,942.330 us</td><td>3,281.1799 us</td><td>4,911.1155 us</td><td>239,578.069 us</td><td>5666.6667</td><td>2666.6667</td><td>2666.6667</td><td>152696501 B</td>
+</tr><tr><td>AsyncReceiveMessageStream</td><td>65536</td><td>1000</td><td>333,192.592 us</td><td>6,997.0544 us</td><td>10,256.1917 us</td><td>334,612.086 us</td><td>9000.0000</td><td>4000.0000</td><td>4000.0000</td><td>1808 B</td>
+</tr><tr><td>TaskReceiveMessageString</td><td>65536</td><td>1000</td><td>379,697.630 us</td><td>3,571.9982 us</td><td>5,346.3987 us</td><td>379,178.303 us</td><td>83000.0000</td><td>83000.0000</td><td>83000.0000</td><td>461845752 B</td>
+</tr><tr><td>AsyncReceiveMessageString</td><td>65536</td><td>1000</td><td>481,439.256 us</td><td>8,126.4125 us</td><td>12,163.2316 us</td><td>483,069.788 us</td><td>83000.0000</td><td>83000.0000</td><td>83000.0000</td><td>1568 B</td>
+</tr><tr><td>ThreadSafeTaskReceiveMessageString</td><td>65536</td><td>1000</td><td>393,990.015 us</td><td>3,694.5510 us</td><td>5,529.8300 us</td><td>393,041.261 us</td><td>83000.0000</td><td>83000.0000</td><td>83000.0000</td><td>5744 B</td>
+</tr><tr><td>ThreadSafeAsyncReceiveMessageString</td><td>65536</td><td>1000</td><td>535,291.140 us</td><td>12,146.9302 us</td><td>17,804.8128 us</td><td>537,883.499 us</td><td>83000.0000</td><td>83000.0000</td><td>83000.0000</td><td>3240 B</td>
+</tr></tbody></table>
+</body>
+</html>

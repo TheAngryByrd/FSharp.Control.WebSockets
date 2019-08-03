@@ -1,2 +1,6 @@
 FSharp.Core
 benchmarkdotnet
+
+Microsoft.AspNetCore.TestHost
+Microsoft.AspNetCore.WebSockets
+Microsoft.AspNetCore.Server.Kestrel
