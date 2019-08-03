@@ -5,6 +5,10 @@ open System.Threading
 
 module Stream =
     open System
+    open Microsoft
+
+    let recyclableMemoryStreamManager = IO.RecyclableMemoryStreamManager()
+
     type System.IO.MemoryStream with
 
         /// **Description**
@@ -20,7 +24,10 @@ module Stream =
         /// **Exceptions**
         ///
         static member UTF8toMemoryStream (text : string) =
-            new IO.MemoryStream(Text.Encoding.UTF8.GetBytes text)
+            let s = recyclableMemoryStreamManager.GetStream()
+            let bytes = Text.Encoding.UTF8.GetBytes text
+            s.Write(bytes, 0, bytes.Length)
+            s
 
         /// **Description**
         ///
@@ -287,7 +294,7 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (socket : WebSocket) (cancellationToken : CancellationToken)  = task {
-        use stream =  new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! result = receiveMessage socket  DefaultBufferSize WebSocketMessageType.Text cancellationToken stream
         match result with
         | ReceiveStreamResult.Stream s ->
@@ -475,7 +482,7 @@ module ThreadSafeWebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (threadSafeWebSocket : ThreadSafeWebSocket) (cancellationToken : CancellationToken) = task {
-        use stream = new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! response = receiveMessage threadSafeWebSocket  WebSocket.DefaultBufferSize WebSocketMessageType.Text cancellationToken stream
         match response with
         | Ok (WebSocket.ReceiveStreamResult.Stream s) -> return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok

@@ -38,6 +38,10 @@ type Async =
 
 module Stream =
     open System
+    open Microsoft
+
+    let recyclableMemoryStreamManager = IO.RecyclableMemoryStreamManager()
+
     type System.IO.MemoryStream with
 
         /// **Description**
@@ -53,7 +57,10 @@ module Stream =
         /// **Exceptions**
         ///
         static member UTF8toMemoryStream (text : string) =
-            new IO.MemoryStream(Text.Encoding.UTF8.GetBytes text)
+            let s = recyclableMemoryStreamManager.GetStream()
+            let bytes = Text.Encoding.UTF8.GetBytes text
+            s.Write(bytes, 0, bytes.Length)
+            s
 
 
         /// **Description**
@@ -74,11 +81,6 @@ module Stream =
             |> Text.Encoding.UTF8.GetString
             |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
 
-        static member ToUTF8String2 (stream : IO.MemoryStream) =
-            stream.Seek(0L,IO.SeekOrigin.Begin) |> ignore //ensure start of stream
-            use sr = new IO.StreamReader(stream, Text.Encoding.UTF8, false, 4096, true)
-            sr.ReadToEnd()
-            |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
 
         /// **Description**
         ///
@@ -94,9 +96,6 @@ module Stream =
         ///
         member stream.ToUTF8String () =
             stream |> System.IO.MemoryStream.ToUTF8String
-
-        member stream.ToUTF8String2 () =
-            stream |> System.IO.MemoryStream.ToUTF8String2
 
 module WebSocket =
     open Stream
@@ -322,7 +321,7 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (socket : WebSocket) = async {
-        use stream =  new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! result = receiveMessage socket DefaultBufferSize WebSocketMessageType.Text stream
         match result with
         | ReceiveStreamResult.Stream s ->
@@ -494,7 +493,7 @@ module ThreadSafeWebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (threadSafeWebSocket : ThreadSafeWebSocket) = async {
-        use stream = new IO.MemoryStream()
+        use stream = recyclableMemoryStreamManager.GetStream()
         let! response = receiveMessage threadSafeWebSocket WebSocket.DefaultBufferSize  WebSocketMessageType.Text stream
         match response with
         | Ok (WebSocket.ReceiveStreamResult.Stream s) -> return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok
