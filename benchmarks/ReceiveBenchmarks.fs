@@ -42,6 +42,7 @@ module Receive =
     open BenchmarkDotNet.Validators
     open BenchmarkDotNet.Exporters
     open BenchmarkDotNet.Environments
+    open BenchmarkDotNet.Extensions
     open System.Reflection
     open BenchmarkDotNet.Configs
 
@@ -53,79 +54,72 @@ module Receive =
 
     type ReceiveMarks () =
         let mutable websocketServer = Unchecked.defaultof<Infrastructure.Server.WebSocketServer>
+        let mutable buffer = Unchecked.defaultof<ArraySegment<Byte>>
+        let mutable memoryStream = Unchecked.defaultof<IO.MemoryStream>
 
-        [<Params(1, 15, 100, 1000, 16384, 65536)>]
+        let mutable threadSafeWebSocket = Unchecked.defaultof<ThreadSafeWebSocket.ThreadSafeWebSocket>
+        let mutable threadSafeWebSocketTPL= Unchecked.defaultof<TPL.ThreadSafeWebSocket.ThreadSafeWebSocket>
+
+        [<Params(
+            1000, // Smaller than DefaultBufferSize
+            20000, // Larger than DefaultBufferSize
+            100000 // Large enough to be put on to Large Object Heap
+            )>]
         member val public dataSize = 0 with get, set
-        [<Params(1, 15, 100, 1000)>]
-        member val public rounds = 0 with get, set
 
         [<GlobalSetup>]
         member self.GlobalSetup() = task {
+            memoryStream <- new IO.MemoryStream()
             let! server = Setup.createSendServer self.dataSize
             websocketServer <- server
+            buffer <- ArraySegment<Byte>( Array.create (self.dataSize) Byte.MinValue)
+
+            threadSafeWebSocket <- ThreadSafeWebSocket.createFromWebSocket websocketServer.clientWebSocket
+            threadSafeWebSocketTPL <- TPL.ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) websocketServer.clientWebSocket
         }
 
         [<GlobalCleanup>]
         member self.GlobalCleanup() = task {
+            memoryStream.Dispose()
             (websocketServer :> IDisposable).Dispose()
         }
 
         [<Benchmark>]
         member this.TaskReceive () = task {
-            let buffer = new ArraySegment<Byte>( Array.create (this.dataSize) Byte.MinValue)
-            for i=0 to this.rounds do
-                let! receive = TPL.WebSocket.receive websocketServer.clientWebSocket buffer CancellationToken.None
-                ()
+            return! TPL.WebSocket.receive websocketServer.clientWebSocket buffer CancellationToken.None
         }
 
         [<Benchmark>]
         member this.AsyncReceive () = task {
-            let buffer = new ArraySegment<Byte>( Array.create (this.dataSize) Byte.MinValue)
-            for i=0 to this.rounds do
-                let! receive = WebSocket.asyncReceive websocketServer.clientWebSocket buffer
-                ()
+            return! WebSocket.asyncReceive websocketServer.clientWebSocket buffer
         }
+
         [<Benchmark>]
         member this.TaskReceiveMessageStream () = task {
-            use ms = new IO.MemoryStream()
-            for i=0 to this.rounds do
-                let! receive = TPL.WebSocket.receiveMessage websocketServer.clientWebSocket WebSocket.DefaultBufferSize WebSocketMessageType.Text CancellationToken.None ms
-                ()
+            return! TPL.WebSocket.receiveMessage websocketServer.clientWebSocket WebSocket.DefaultBufferSize WebSocketMessageType.Text CancellationToken.None memoryStream
         }
 
         [<Benchmark>]
         member this.AsyncReceiveMessageStream () = task {
-            use ms = new IO.MemoryStream()
-            for i=0 to this.rounds do
-                let! receive = WebSocket.receiveMessage websocketServer.clientWebSocket WebSocket.DefaultBufferSize WebSocketMessageType.Text ms
-                ()
+            return! WebSocket.receiveMessage websocketServer.clientWebSocket WebSocket.DefaultBufferSize WebSocketMessageType.Text memoryStream
         }
+
         [<Benchmark>]
         member this.TaskReceiveMessageString () = task {
-            for i=0 to this.rounds do
-                let! receive = TPL.WebSocket.receiveMessageAsUTF8 websocketServer.clientWebSocket CancellationToken.None
-                ()
+            return! TPL.WebSocket.receiveMessageAsUTF8 websocketServer.clientWebSocket CancellationToken.None
         }
 
         [<Benchmark>]
         member this.AsyncReceiveMessageString () = task {
-            for i=0 to this.rounds do
-                let! receive = WebSocket.receiveMessageAsUTF8 websocketServer.clientWebSocket
-                ()
+            return! WebSocket.receiveMessageAsUTF8 websocketServer.clientWebSocket
         }
 
         [<Benchmark>]
         member this.ThreadSafeTaskReceiveMessageString () = task {
-            let tsws = TPL.ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) websocketServer.clientWebSocket
-            for i=0 to this.rounds do
-                let! receive = TPL.ThreadSafeWebSocket.receiveMessageAsUTF8 tsws CancellationToken.None
-                ()
+            return! TPL.ThreadSafeWebSocket.receiveMessageAsUTF8 threadSafeWebSocketTPL CancellationToken.None
         }
 
         [<Benchmark>]
         member this.ThreadSafeAsyncReceiveMessageString () = task {
-            let tsws = ThreadSafeWebSocket.createFromWebSocket websocketServer.clientWebSocket
-            for i=0 to this.rounds do
-                let! receive = ThreadSafeWebSocket.receiveMessageAsUTF8 tsws
-                ()
+            return! ThreadSafeWebSocket.receiveMessageAsUTF8 threadSafeWebSocket
         }

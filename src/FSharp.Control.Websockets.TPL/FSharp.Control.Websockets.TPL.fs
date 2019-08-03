@@ -364,7 +364,7 @@ module ThreadSafeWebSocket =
                 reply.SetResult(Error dispatch)
         }
 
-        let sendLoop () = task {
+        let sendLoop  = task {
             let mutable hasClosedBeenSent = false
 
             while webSocket |> WebSocket.isWebsocketOpen && not hasClosedBeenSent do
@@ -380,14 +380,11 @@ module ThreadSafeWebSocket =
                     do! wrap (fun () -> WebSocket.closeOutput webSocket status message cancellationToken ) replyChannel
         }
 
-        let receiveLoop () = task {
+        let receiveLoop = task {
             while webSocket |> WebSocket.isWebsocketOpen do
                 let! (cancellationToken, buffer, messageType, stream, replyChannel) = receiveBuffer.ReceiveAsync()
                 do! wrap (fun () -> WebSocket.receiveMessage webSocket buffer messageType cancellationToken stream ) replyChannel
         }
-
-        Task.Run<unit>(Func<Task<unit>>(sendLoop)) |> ignore
-        Task.Run<unit>(Func<Task<unit>>(receiveLoop)) |> ignore
 
         {
             websocket = webSocket
