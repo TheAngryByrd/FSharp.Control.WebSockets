@@ -24,10 +24,8 @@ module Stream =
         /// **Exceptions**
         ///
         static member UTF8toMemoryStream (text : string) =
-            let s = recyclableMemoryStreamManager.GetStream()
             let bytes = Text.Encoding.UTF8.GetBytes text
-            s.Write(bytes, 0, bytes.Length)
-            s
+            recyclableMemoryStreamManager.GetStream("UTF8toMemoryStream", bytes, 0, bytes.Length)
 
         /// **Description**
         ///
