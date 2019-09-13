@@ -9,6 +9,7 @@
         <None Include="App.config" />
         <Compile Include="AssemblyInfo.fs" />
         <Compile Include="../FSharp.Control.Websockets.Tests/Infrastructure.fs" />
+        <Compile Include="../FSharp.Control.Websockets.Tests/ServerInfrastructure.fs" />
         <Compile Include="Tests.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>

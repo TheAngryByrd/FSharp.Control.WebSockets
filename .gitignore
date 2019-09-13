@@ -263,3 +263,7 @@ dist/
 coverage.xml
 coverage.*.xml
 lcov.info
+
+# Paket tool store
+.paket/.store
+.paket/paket

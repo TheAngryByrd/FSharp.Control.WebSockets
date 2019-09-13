@@ -25,10 +25,12 @@ let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = asy
             try
                 let! result = WebSocket.receiveMessageAsUTF8 websocket
                 match result with
-                | WebSocket.ReceiveUTF8Result.String text ->
+                | Ok(WebSocket.ReceiveUTF8Result.String text) ->
                     do! WebSocket.sendMessageAsUTF8 websocket text
-                | WebSocket.ReceiveUTF8Result.Closed (status, reason) ->
+                | Ok(WebSocket.ReceiveUTF8Result.Closed (status, reason)) ->
                     printfn "Socket closed %A - %s" status reason
+                | Error e ->
+                    raise e
             with e ->
                 printfn "%A" e
 
@@ -50,9 +52,8 @@ let tests =
 
     testList "Tests" [
         testCaseAsync (sprintf "Full normal websocket interaction" ) <| async {
-            let! (server, clientWebSocket) = Server.getServerAndWs configureEchoServer
-            use server = server
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket clientWebSocket
+            use! wss = Server.getServerAndWs configureEchoServer
+            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket wss.clientWebSocket
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
             let! _ =  expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket
@@ -65,9 +66,8 @@ let tests =
         }
 
         testCaseAsync (sprintf "Full close output websocket interaction" ) <| async {
-            let! (server, clientWebSocket) = Server.getServerAndWs configureEchoServer
-            use server = server
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket clientWebSocket
+            use! wss = Server.getServerAndWs configureEchoServer
+            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket wss.clientWebSocket
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
             let! _ = expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket
