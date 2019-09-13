@@ -11,6 +11,8 @@ module Setup =
     open Microsoft.AspNetCore.Http
     open FSharp.Control.Tasks.V2.ContextInsensitive
     open System.Net.WebSockets
+    // open System.Memory
+
     let sendRandomData dataSize (httpContext : HttpContext) (next : unit -> Task) = task {
         if httpContext.WebSockets.IsWebSocketRequest then
             let dataToSend =
@@ -32,6 +34,69 @@ module Setup =
 
             ()
         Infrastructure.Server.getServerAndWs configure
+
+
+module Formatters =
+    open System
+    open BenchmarkDotNet.Attributes
+    open BenchmarkDotNet.Diagnosers
+    open BenchmarkDotNet.Configs
+    open BenchmarkDotNet.Jobs
+    open BenchmarkDotNet.Running
+    open BenchmarkDotNet.Validators
+    open BenchmarkDotNet.Exporters
+    open BenchmarkDotNet.Environments
+    open BenchmarkDotNet.Extensions
+    open System.Reflection
+    open BenchmarkDotNet.Configs
+
+    let format = sprintf "%s\r\n%s\r\n"
+
+    type FormatterMarks () =
+        let mutable stringToWrite  = "Hello"
+
+        [<Params(
+            10, // Smaller
+            100, // Larger
+            1000, // Larger
+            4096 // Largest buffer size
+            )>]
+        member val public dataSize = 0 with get, set
+
+        [<GlobalSetup>]
+        member self.GlobalSetup() =
+            stringToWrite <-
+                Infrastructure.Generator.genStr self.dataSize
+
+        [<Benchmark>]
+        member x.cachedsprintf () =
+            format (stringToWrite.Length.ToString("X")) stringToWrite
+
+        [<Benchmark>]
+        member x.sprintfFormat () =
+            sprintf "%s\r\n%s\r\n" (stringToWrite.Length.ToString("X")) stringToWrite
+
+        [<Benchmark>]
+        member x.stringFormatFormat () =
+            String.Format("{0}\r\n{1}\r\n", (stringToWrite.Length.ToString("X")), stringToWrite)
+
+        [<Benchmark>]
+        member x.stringJoinFormat () =
+            String.Join("", [|(stringToWrite.Length.ToString("X")); "\r\n"; stringToWrite; "\r\n"|])
+
+        [<Benchmark>]
+        member x.stringConcatFormat () =
+            stringToWrite.Length.ToString("X") + "\r\n" + stringToWrite + "\r\n"
+
+        [<Benchmark>]
+        member x.stringBuilderFormat () =
+            let sb = Text.StringBuilder()
+            sb
+                .Append(stringToWrite.Length.ToString("X"))
+                .Append("\r\n")
+                .Append(stringToWrite)
+                .Append("\r\n")
+                .ToString()
 
 module UTF8Convertion =
     open System
@@ -59,6 +124,7 @@ module UTF8Convertion =
         use sr = new IO.StreamReader(stream, Text.Encoding.UTF8, false, 4096, true)
         sr.ReadToEnd()
         |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
+
 
     type UTF8Marks () =
         let mutable byteString = Unchecked.defaultof<byte array>
@@ -103,8 +169,6 @@ module UTF8Convertion =
         [<Benchmark>]
         member this.UTFToStreamReader () =
             ToUTF8String2 memoryStream
-
-
 
 module Receive =
     open System
