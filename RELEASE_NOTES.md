@@ -1,3 +1,7 @@
+#### 0.2.1 - 2019-09-12
+* MINOR: Replace Memorystream with RecyclableMemoryStream to help reduce Large Object Heap allocations (https://github.com/TheAngryByrd/FSharp.Control.WebSockets/pull/3)
+* MINOR: Adding Benchmarks (https://github.com/TheAngryByrd/FSharp.Control.WebSockets/pull/3)
+
 #### 0.2.0 - 2019-05-24
 * BREAKING: API Changes
 * FEATURE: Doc Comments for all public functions
