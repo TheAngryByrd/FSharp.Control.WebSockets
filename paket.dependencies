@@ -17,6 +17,8 @@ nuget Microsoft.AspNetCore.TestHost
 nuget Microsoft.AspNetCore.WebSockets
 nuget Microsoft.AspNetCore.Server.Kestrel
 
+nuget benchmarkdotnet
+nuget Microsoft.IO.RecyclableMemoryStream
 // [ FAKE GROUP ]
 group Build
 

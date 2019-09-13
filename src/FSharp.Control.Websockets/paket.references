@@ -1,3 +1,4 @@
 FSharp.Core
 SourceLink.Create.CommandLine
 Microsoft.NETCore.App
+Microsoft.IO.RecyclableMemoryStream

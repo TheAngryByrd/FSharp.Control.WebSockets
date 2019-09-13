@@ -35,6 +35,8 @@ let distDir = __SOURCE_DIRECTORY__  @@ "dist"
 let distGlob = distDir @@ "*.nupkg"
 let toolsDir = __SOURCE_DIRECTORY__  @@ "tools"
 
+let paketToolPath = __SOURCE_DIRECTORY__ </> ".paket" </> (if Environment.isWindows then "paket.exe" else "paket")
+
 let coverageReportDir =  __SOURCE_DIRECTORY__  @@ "docs" @@ "coverage"
 
 let gitOwner = "TheAngryByrd"
@@ -287,6 +289,7 @@ Target.create "Publish" <| fun _ ->
             { c with
                 PublishUrl = "https://www.nuget.org"
                 WorkingDir = "dist"
+                ToolPath = paketToolPath
             }
         )
 

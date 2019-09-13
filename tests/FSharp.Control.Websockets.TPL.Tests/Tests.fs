@@ -15,6 +15,7 @@ open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.Configuration
 open Infrastructure
 open System.Threading
+open Infrastructure
 
 
 let testCaseTask name test = testCaseAsync name (test |> Async.AwaitTask)
@@ -55,9 +56,8 @@ let tests =
 
     testList "Tests" [
         testCaseTask (sprintf "Full normal websocket interaction" ) <| task {
-            let! (server, clientWebSocket) = Server.getServerAndWs configureEchoServer
-            use server = server
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) clientWebSocket
+            use! wss = Server.getServerAndWs configureEchoServer
+            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) wss.clientWebSocket
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
             let! _ =  expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None
@@ -70,9 +70,8 @@ let tests =
         }
 
         testCaseTask (sprintf "Full close output websocket interaction" ) <| task {
-            let! (server, clientWebSocket) = Server.getServerAndWs configureEchoServer
-            use server = server
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) clientWebSocket
+            use! wss = Server.getServerAndWs configureEchoServer
+            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) wss.clientWebSocket
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
             let! _ =  expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None

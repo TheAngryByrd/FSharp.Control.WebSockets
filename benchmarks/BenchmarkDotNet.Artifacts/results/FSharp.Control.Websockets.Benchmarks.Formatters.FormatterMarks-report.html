@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FSharp.Control.Websockets.Benchmarks.Formatters.FormatterMarks-20190807-104515</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=macOS Mojave 10.14.5 (18F132) [Darwin 18.6.0]
+Intel Core i7-4870HQ CPU 2.50GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.0.100-preview7-012821
+  [Host]    : .NET Core 3.0.0-preview7-27912-14 (CoreCLR 4.700.19.32702, CoreFX 4.700.19.36209), 64bit RyuJIT DEBUG
+  MediumRun : .NET Core 3.0.0-preview7-27912-14 (CoreCLR 4.700.19.32702, CoreFX 4.700.19.36209), 64bit RyuJIT
+</code></pre>
+<pre><code>Job=MediumRun  Runtime=Core  IterationCount=15  
+LaunchCount=2  WarmupCount=10  
+</code></pre>
+
+<table>
+<thead><tr><th>       Method</th><th>dataSize</th><th> Mean</th><th>Error</th><th>StdDev</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>cachedsprintf</td><td>10</td><td>164.96 ns</td><td>3.729 ns</td><td>5.581 ns</td><td>0.0842</td><td>-</td><td>-</td><td>264 B</td>
+</tr><tr><td>sprintfFormat</td><td>10</td><td>238.95 ns</td><td>8.749 ns</td><td>12.824 ns</td><td>0.1173</td><td>-</td><td>-</td><td>368 B</td>
+</tr><tr><td>stringFormatFormat</td><td>10</td><td>170.98 ns</td><td>2.360 ns</td><td>3.532 ns</td><td>0.0253</td><td>-</td><td>-</td><td>80 B</td>
+</tr><tr><td>stringJoinFormat</td><td>10</td><td>126.75 ns</td><td>4.003 ns</td><td>5.741 ns</td><td>0.0432</td><td>-</td><td>-</td><td>136 B</td>
+</tr><tr><td>stringConcatFormat</td><td>10</td><td>77.20 ns</td><td>1.864 ns</td><td>2.733 ns</td><td>0.0254</td><td>-</td><td>-</td><td>80 B</td>
+</tr><tr><td>stringBuilderFormat</td><td>10</td><td>102.49 ns</td><td>4.549 ns</td><td>6.378 ns</td><td>0.0587</td><td>-</td><td>-</td><td>184 B</td>
+</tr><tr><td>cachedsprintf</td><td>100</td><td>256.75 ns</td><td>37.865 ns</td><td>56.674 ns</td><td>0.1452</td><td>-</td><td>-</td><td>456 B</td>
+</tr><tr><td>sprintfFormat</td><td>100</td><td>270.25 ns</td><td>19.719 ns</td><td>28.280 ns</td><td>0.1783</td><td>-</td><td>-</td><td>560 B</td>
+</tr><tr><td>stringFormatFormat</td><td>100</td><td>195.49 ns</td><td>5.717 ns</td><td>8.557 ns</td><td>0.0865</td><td>-</td><td>-</td><td>272 B</td>
+</tr><tr><td>stringJoinFormat</td><td>100</td><td>139.45 ns</td><td>7.786 ns</td><td>11.413 ns</td><td>0.1044</td><td>-</td><td>-</td><td>328 B</td>
+</tr><tr><td>stringConcatFormat</td><td>100</td><td>98.77 ns</td><td>6.621 ns</td><td>9.706 ns</td><td>0.0867</td><td>-</td><td>-</td><td>272 B</td>
+</tr><tr><td>stringBuilderFormat</td><td>100</td><td>242.09 ns</td><td>10.401 ns</td><td>15.245 ns</td><td>0.2933</td><td>-</td><td>-</td><td>920 B</td>
+</tr><tr><td>cachedsprintf</td><td>1000</td><td>411.85 ns</td><td>30.029 ns</td><td>44.946 ns</td><td>0.7186</td><td>-</td><td>-</td><td>2256 B</td>
+</tr><tr><td>sprintfFormat</td><td>1000</td><td>439.63 ns</td><td>22.467 ns</td><td>33.627 ns</td><td>0.7520</td><td>-</td><td>-</td><td>2360 B</td>
+</tr><tr><td>stringFormatFormat</td><td>1000</td><td>1,112.68 ns</td><td>71.489 ns</td><td>100.217 ns</td><td>2.0142</td><td>-</td><td>-</td><td>6320 B</td>
+</tr><tr><td>stringJoinFormat</td><td>1000</td><td>331.94 ns</td><td>12.008 ns</td><td>17.601 ns</td><td>0.6781</td><td>-</td><td>-</td><td>2128 B</td>
+</tr><tr><td>stringConcatFormat</td><td>1000</td><td>364.69 ns</td><td>19.490 ns</td><td>27.952 ns</td><td>0.6604</td><td>-</td><td>-</td><td>2072 B</td>
+</tr><tr><td>stringBuilderFormat</td><td>1000</td><td>855.19 ns</td><td>86.410 ns</td><td>129.335 ns</td><td>2.0161</td><td>-</td><td>-</td><td>6320 B</td>
+</tr><tr><td>cachedsprintf</td><td>4096</td><td>1,046.53 ns</td><td>44.110 ns</td><td>66.022 ns</td><td>2.6875</td><td>-</td><td>-</td><td>8448 B</td>
+</tr><tr><td>sprintfFormat</td><td>4096</td><td>1,033.09 ns</td><td>53.636 ns</td><td>78.619 ns</td><td>2.7237</td><td>-</td><td>-</td><td>8552 B</td>
+</tr><tr><td>stringFormatFormat</td><td>4096</td><td>2,405.31 ns</td><td>138.021 ns</td><td>202.310 ns</td><td>7.9346</td><td>-</td><td>-</td><td>24904 B</td>
+</tr><tr><td>stringJoinFormat</td><td>4096</td><td>910.52 ns</td><td>54.507 ns</td><td>81.584 ns</td><td>2.6522</td><td>-</td><td>-</td><td>8320 B</td>
+</tr><tr><td>stringConcatFormat</td><td>4096</td><td>1,072.03 ns</td><td>133.310 ns</td><td>195.404 ns</td><td>2.6302</td><td>-</td><td>-</td><td>8264 B</td>
+</tr><tr><td>stringBuilderFormat</td><td>4096</td><td>2,553.03 ns</td><td>88.133 ns</td><td>129.185 ns</td><td>7.9346</td><td>-</td><td>-</td><td>24896 B</td>
+</tr></tbody></table>
+</body>
+</html>

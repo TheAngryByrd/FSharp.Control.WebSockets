@@ -18,11 +18,8 @@ type Async =
     ///
     /// **Exceptions**
     ///
-    static member AwaitTaskWithCancellation (f: CancellationToken -> Task) : Async<unit> = async {
-        let! ct = Async.CancellationToken
-        return! f ct |> Async.AwaitTask
-    }
-
+    static member AwaitTaskWithCancellation (f: CancellationToken -> Task) : Async<unit> =
+        async.Bind(Async.CancellationToken, f >> Async.AwaitTask)
 
     /// **Description**
     ///
@@ -36,13 +33,15 @@ type Async =
     ///
     /// **Exceptions**
     ///
-    static member AwaitTaskWithCancellation (f: CancellationToken -> Task<'a>) : Async<'a> = async {
-        let! ct = Async.CancellationToken
-        return! f ct |> Async.AwaitTask
-    }
+    static member AwaitTaskWithCancellation (f: CancellationToken -> Task<'a>) : Async<'a> =
+        async.Bind(Async.CancellationToken, f >> Async.AwaitTask)
 
 module Stream =
     open System
+    open Microsoft
+
+    let recyclableMemoryStreamManager = IO.RecyclableMemoryStreamManager()
+
     type System.IO.MemoryStream with
 
         /// **Description**
@@ -58,7 +57,8 @@ module Stream =
         /// **Exceptions**
         ///
         static member UTF8toMemoryStream (text : string) =
-            new IO.MemoryStream(Text.Encoding.UTF8.GetBytes text)
+            let bytes = Text.Encoding.UTF8.GetBytes text
+            recyclableMemoryStreamManager.GetStream("UTF8toMemoryStream", bytes, 0, bytes.Length)
 
 
         /// **Description**
@@ -78,6 +78,7 @@ module Stream =
             stream.ToArray()
             |> Text.Encoding.UTF8.GetString
             |> fun s -> s.TrimEnd(char 0) // remove null teriminating characters
+
 
         /// **Description**
         ///
@@ -180,6 +181,7 @@ module WebSocket =
     let asyncClose (websocket : WebSocket) (closeStatus : WebSocketCloseStatus) (statusDescription : string)  =
         fun ct -> websocket.CloseAsync(closeStatus, statusDescription, ct)
         |> Async.AwaitTaskWithCancellation
+        |> Async.Catch
 
 
     /// **Description**
@@ -199,6 +201,7 @@ module WebSocket =
     let asyncCloseOutput (websocket : WebSocket) (closeStatus : WebSocketCloseStatus) (statusDescription : string)  =
         fun ct -> websocket.CloseOutputAsync(closeStatus, statusDescription, ct)
         |> Async.AwaitTaskWithCancellation
+        |> Async.Catch
 
 
     /// **Description**
@@ -228,7 +231,7 @@ module WebSocket =
                 else
                     do! (asyncSend socket (ArraySegment(Array.empty))  messageType true)
         }
-        do! sendMessage'()
+        return! sendMessage'()
     }
 
 
@@ -247,7 +250,7 @@ module WebSocket =
     ///
     let sendMessageAsUTF8 (socket : WebSocket) (text : string) = async {
         use stream = IO.MemoryStream.UTF8toMemoryStream text
-        do! sendMessage socket DefaultBufferSize WebSocketMessageType.Text stream
+        return! sendMessage socket DefaultBufferSize WebSocketMessageType.Text stream
     }
 
 
@@ -282,18 +285,20 @@ module WebSocket =
             match result with
             | result when result.MessageType = WebSocketMessageType.Close || socket.State = WebSocketState.CloseReceived || socket.State = WebSocketState.CloseSent ->
                 // printfn "Close received! %A - %A" socket.CloseStatus socket.CloseStatusDescription
-                do! asyncCloseOutput socket WebSocketCloseStatus.NormalClosure "Close received by client"
+                let! _ = asyncCloseOutput socket WebSocketCloseStatus.NormalClosure "Close received by client"
                 return ReceiveStreamResult.Closed(socket.CloseStatus.Value, socket.CloseStatusDescription)
             | result ->
                 // printfn "result.MessageType -> %A" result.MessageType
                 if result.MessageType <> messageType then return ()
-                do! writeableStream.AsyncWrite(buffer.Array, buffer.Offset, result.Count)
+                do! writeableStream.AsyncWrite(buffer.Array, 0, result.Count)
                 if result.EndOfMessage then
                     return Stream writeableStream
                 else
                     return! readTillEnd' ()
         }
+
         return! readTillEnd' ()
+
     }
 
 
@@ -318,13 +323,13 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (socket : WebSocket) = async {
-        use stream =  new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! result = receiveMessage socket DefaultBufferSize WebSocketMessageType.Text stream
         match result with
         | ReceiveStreamResult.Stream s ->
-            return stream |> IO.MemoryStream.ToUTF8String |> String
+            return stream |> IO.MemoryStream.ToUTF8String |> String |> Ok
         | ReceiveStreamResult.Closed(status, reason) ->
-            return ReceiveUTF8Result.Closed(status, reason)
+            return ReceiveUTF8Result.Closed(status, reason) |> Ok
     }
 
 module ThreadSafeWebSocket =
@@ -377,15 +382,15 @@ module ThreadSafeWebSocket =
     ///
     let createFromWebSocket (webSocket : WebSocket) =
         /// handle executing a task in a try/catch and wrapping up the callstack info for later
-        let inline wrap (action: Async<'a>) (reply: AsyncReplyChannel<_>) = async {
-            try
-                let! result = action
-                reply.Reply(Ok result)
-            with
-            | ex ->
+        let inline wrap (action: Async<Choice<_,exn>>) (reply: AsyncReplyChannel<_>) = async {
+            match! action with
+            | Choice1Of2 result -> reply.Reply(Ok result)
+            | Choice2Of2 ex ->
                 let dispatch = ExceptionDispatchInfo.Capture ex
                 reply.Reply(Error dispatch)
         }
+
+        let inline wrap' a = wrap (Async.Catch a)
 
         let sendAgent = MailboxProcessor<SendMessages>.Start(fun inbox ->
             let rec loop () = async {
@@ -393,7 +398,7 @@ module ThreadSafeWebSocket =
                 if webSocket |> WebSocket.isWebsocketOpen then
                     match message with
                     | Send (buffer, messageType, stream, replyChannel) ->
-                        do! wrap (WebSocket.sendMessage webSocket buffer messageType stream ) replyChannel
+                        do! wrap' (WebSocket.sendMessage webSocket buffer messageType stream ) replyChannel
                         return! loop ()
                     | Close (status, message, replyChannel) ->
                         do! wrap (WebSocket.asyncClose webSocket status message) replyChannel
@@ -406,7 +411,7 @@ module ThreadSafeWebSocket =
             let rec loop () = async {
                 let! (buffer, messageType, stream, replyChannel) = inbox.Receive()
                 if webSocket |> WebSocket.isWebsocketOpen then
-                    do! wrap (WebSocket.receiveMessage webSocket buffer messageType stream) replyChannel
+                    do! wrap' (WebSocket.receiveMessage webSocket buffer messageType stream) replyChannel
                     return! loop ()
             }
             loop ()
@@ -435,7 +440,7 @@ module ThreadSafeWebSocket =
     ///
     /// **Exceptions**
     ///
-    let sendMessage (threadSafeWebSocket : ThreadSafeWebSocket) (bufferSize : int) messageType (readableStream : #IO.Stream) =
+    let sendMessage (threadSafeWebSocket : ThreadSafeWebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (readableStream : #IO.Stream) =
         threadSafeWebSocket.sendChannel.PostAndAsyncReply(fun reply -> Send(bufferSize, messageType, readableStream, reply))
 
 
@@ -490,10 +495,11 @@ module ThreadSafeWebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (threadSafeWebSocket : ThreadSafeWebSocket) = async {
-        use stream = new IO.MemoryStream()
+        use stream = recyclableMemoryStreamManager.GetStream()
         let! response = receiveMessage threadSafeWebSocket WebSocket.DefaultBufferSize  WebSocketMessageType.Text stream
         match response with
-        | Ok (WebSocket.ReceiveStreamResult.Stream s) -> return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok
+        | Ok (WebSocket.ReceiveStreamResult.Stream s) ->
+            return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok
         | Ok (WebSocket.Closed(status, reason)) ->
             return Ok (WebSocket.ReceiveUTF8Result.Closed(status, reason))
         | Error ex -> return Error ex

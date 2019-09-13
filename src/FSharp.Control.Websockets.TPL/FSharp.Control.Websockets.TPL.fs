@@ -5,6 +5,10 @@ open System.Threading
 
 module Stream =
     open System
+    open Microsoft
+
+    let recyclableMemoryStreamManager = IO.RecyclableMemoryStreamManager()
+
     type System.IO.MemoryStream with
 
         /// **Description**
@@ -20,7 +24,8 @@ module Stream =
         /// **Exceptions**
         ///
         static member UTF8toMemoryStream (text : string) =
-            new IO.MemoryStream(Text.Encoding.UTF8.GetBytes text)
+            let bytes = Text.Encoding.UTF8.GetBytes text
+            recyclableMemoryStreamManager.GetStream("UTF8toMemoryStream", bytes, 0, bytes.Length)
 
         /// **Description**
         ///
@@ -256,7 +261,7 @@ module WebSocket =
             | result ->
                 if result.MessageType <> messageType then
                     failwithf "Invalid message type received %A, expected %A" result.MessageType messageType
-                do! writeableStream.WriteAsync(buffer.Array, buffer.Offset, result.Count)
+                do! writeableStream.WriteAsync(buffer.Array, 0, result.Count)
                 if result.EndOfMessage then
                     moreToRead <- false
                     mainResult <- Stream writeableStream
@@ -287,7 +292,7 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (socket : WebSocket) (cancellationToken : CancellationToken)  = task {
-        use stream =  new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! result = receiveMessage socket  DefaultBufferSize WebSocketMessageType.Text cancellationToken stream
         match result with
         | ReceiveStreamResult.Stream s ->
@@ -364,7 +369,7 @@ module ThreadSafeWebSocket =
                 reply.SetResult(Error dispatch)
         }
 
-        let sendLoop () = task {
+        let sendLoop  = task {
             let mutable hasClosedBeenSent = false
 
             while webSocket |> WebSocket.isWebsocketOpen && not hasClosedBeenSent do
@@ -380,14 +385,11 @@ module ThreadSafeWebSocket =
                     do! wrap (fun () -> WebSocket.closeOutput webSocket status message cancellationToken ) replyChannel
         }
 
-        let receiveLoop () = task {
+        let receiveLoop = task {
             while webSocket |> WebSocket.isWebsocketOpen do
                 let! (cancellationToken, buffer, messageType, stream, replyChannel) = receiveBuffer.ReceiveAsync()
                 do! wrap (fun () -> WebSocket.receiveMessage webSocket buffer messageType cancellationToken stream ) replyChannel
         }
-
-        Task.Run<unit>(Func<Task<unit>>(sendLoop)) |> ignore
-        Task.Run<unit>(Func<Task<unit>>(receiveLoop)) |> ignore
 
         {
             websocket = webSocket
@@ -456,7 +458,7 @@ module ThreadSafeWebSocket =
     ///
     /// **Exceptions**
     ///
-    let receiveMessage (threadSafeWebSocket : ThreadSafeWebSocket)  (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : #IO.Stream) = task {
+    let receiveMessage (threadSafeWebSocket : ThreadSafeWebSocket)  (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : IO.Stream) = task {
         let reply = new TaskCompletionSource<_>()
         let msg = (cancellationToken, bufferSize, messageType, writeableStream, reply)
         let! accepted = threadSafeWebSocket.receiveChannel.SendAsync(msg)
@@ -478,7 +480,7 @@ module ThreadSafeWebSocket =
     /// **Exceptions**
     ///
     let receiveMessageAsUTF8 (threadSafeWebSocket : ThreadSafeWebSocket) (cancellationToken : CancellationToken) = task {
-        use stream = new IO.MemoryStream()
+        use stream =  recyclableMemoryStreamManager.GetStream()
         let! response = receiveMessage threadSafeWebSocket  WebSocket.DefaultBufferSize WebSocketMessageType.Text cancellationToken stream
         match response with
         | Ok (WebSocket.ReceiveStreamResult.Stream s) -> return stream |> IO.MemoryStream.ToUTF8String |> WebSocket.ReceiveUTF8Result.String |> Ok
