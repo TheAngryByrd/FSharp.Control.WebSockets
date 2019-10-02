@@ -4,6 +4,8 @@ build_script:
   - cmd: build.cmd
 test: off
 version: 0.0.1.{build}
+install:
+  - cmd: choco install dotnetcore-sdk -y
 artifacts:
   - path: bin
     name: bin
