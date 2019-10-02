@@ -66,6 +66,11 @@ module WebSocket =
     open System.Net.WebSockets
     open FSharp.Control.Tasks.V2
 
+    #if NETSTANDARD2_1
+    open System.Buffers
+    let private arrayPool = ArrayPool<byte>.Shared
+    #endif
+
     /// **Description**
     ///
     /// Same as the `DefaultReceiveBufferSize` and `DefaultClientSendBufferSize` from the internal [WebSocketHelpers]( https://referencesource.microsoft.com/#System/net/System/Net/WebSockets/WebSocketHelpers.cs,285b8b64a4da6851).
@@ -190,15 +195,27 @@ module WebSocket =
     /// **Exceptions**
     ///
     let sendMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (readableStream : #IO.Stream)  = task {
-        let buffer = Array.create (bufferSize) Byte.MinValue
+        let buffer =
+            #if NETSTANDARD2_0 || NET461
+            Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
+            #endif
         let mutable moreToRead = true
-        while moreToRead && isWebsocketOpen socket do
-            let! read = readableStream.ReadAsync(buffer, 0, buffer.Length)
-            if read > 0 then
-                do!  send socket (ArraySegment(buffer |> Array.take read)) messageType false cancellationToken
-            else
-                moreToRead <- false
-                do! send socket (ArraySegment(Array.empty)) messageType true cancellationToken
+        try
+            while moreToRead && isWebsocketOpen socket do
+                let! read = readableStream.ReadAsync(buffer, 0, buffer.Length)
+                if read > 0 then
+                    do!  send socket (ArraySegment(buffer |> Array.take read)) messageType false cancellationToken
+                else
+                    moreToRead <- false
+                    do! send socket (ArraySegment(Array.empty)) messageType true cancellationToken
+        finally
+            #if NETSTANDARD2_0 || NET461
+            ()
+            #else
+            arrayPool.Return(buffer,true)
+            #endif
         }
 
 
@@ -248,24 +265,38 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : IO.Stream)  = task {
-        let buffer = new ArraySegment<Byte>( Array.create (bufferSize) Byte.MinValue)
+        let innerbuffer =
+            #if NETSTANDARD2_0 || NET461
+            Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
+            #endif
+        let buffer = new ArraySegment<Byte>(innerbuffer)
         let mutable moreToRead = true
         let mutable mainResult = Unchecked.defaultof<ReceiveStreamResult>
-        while moreToRead do
-            let! result  = receive socket buffer cancellationToken
-            match result with
-            | result when result.MessageType = WebSocketMessageType.Close || socket.State = WebSocketState.CloseReceived || socket.State = WebSocketState.CloseSent ->
-                do! socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Close received", cancellationToken)
-                moreToRead <- false
-                mainResult <- Closed(socket.CloseStatus.Value, socket.CloseStatusDescription)
-            | result ->
-                if result.MessageType <> messageType then
-                    failwithf "Invalid message type received %A, expected %A" result.MessageType messageType
-                do! writeableStream.WriteAsync(buffer.Array, 0, result.Count)
-                if result.EndOfMessage then
+        try
+            while moreToRead do
+                let! result  = receive socket buffer cancellationToken
+                match result with
+                | result when result.MessageType = WebSocketMessageType.Close || socket.State = WebSocketState.CloseReceived || socket.State = WebSocketState.CloseSent ->
+                    do! socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Close received", cancellationToken)
                     moreToRead <- false
-                    mainResult <- Stream writeableStream
-        return mainResult
+                    mainResult <- Closed(socket.CloseStatus.Value, socket.CloseStatusDescription)
+                | result ->
+                    if result.MessageType <> messageType then
+                        failwithf "Invalid message type received %A, expected %A" result.MessageType messageType
+                    do! writeableStream.WriteAsync(buffer.Array, 0, result.Count)
+                    if result.EndOfMessage then
+                        moreToRead <- false
+                        mainResult <- Stream writeableStream
+            return mainResult
+        finally
+            #if NETSTANDARD2_0 || NET461
+            ()
+            #else
+            arrayPool.Return(innerbuffer,true)
+            #endif
+
     }
 
     /// One of the possible results from reading a whole message from a websocket.
