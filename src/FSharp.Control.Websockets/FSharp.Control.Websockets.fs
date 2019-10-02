@@ -100,6 +100,11 @@ module WebSocket =
     open System
     open System.Net.WebSockets
 
+    #if NETSTANDARD2_1
+    open System.Buffers
+    let private arrayPool = ArrayPool<byte>.Shared
+    #endif
+
     /// **Description**
     ///
     /// Same as the `DefaultReceiveBufferSize` and `DefaultClientSendBufferSize` from the internal [WebSocketHelpers]( https://referencesource.microsoft.com/#System/net/System/Net/WebSockets/WebSocketHelpers.cs,285b8b64a4da6851).
@@ -220,7 +225,12 @@ module WebSocket =
     /// **Exceptions**
     ///
     let sendMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (readableStream : #IO.Stream)  = async {
-        let buffer = Array.create (bufferSize) Byte.MinValue
+        let buffer =
+            #if NETSTANDARD2_1
+            arrayPool.Rent(bufferSize)
+            #else
+            Array.create (bufferSize) Byte.MinValue
+            #endif
 
         let rec sendMessage' () = async {
             if isWebsocketOpen socket then
@@ -231,7 +241,14 @@ module WebSocket =
                 else
                     do! (asyncSend socket (ArraySegment(Array.empty))  messageType true)
         }
-        return! sendMessage'()
+        try
+            return! sendMessage'()
+        finally
+            #if NETSTANDARD2_1
+            arrayPool.Return(buffer,true)
+            #else
+            ()
+            #endif
     }
 
 
@@ -278,7 +295,13 @@ module WebSocket =
     /// **Exceptions**
     ///
     let receiveMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (writeableStream : IO.Stream)  = async {
-        let buffer = new ArraySegment<Byte>( Array.create (bufferSize) Byte.MinValue)
+        let innerbuffer =
+            #if NETSTANDARD2_1
+            arrayPool.Rent(bufferSize)
+            #else
+            Array.create (bufferSize) Byte.MinValue
+            #endif
+        let buffer = new ArraySegment<Byte>(innerbuffer)
 
         let rec readTillEnd' () = async {
             let! result  = asyncReceive socket buffer
@@ -296,8 +319,14 @@ module WebSocket =
                 else
                     return! readTillEnd' ()
         }
-
-        return! readTillEnd' ()
+        try
+            return! readTillEnd' ()
+        finally
+            #if NETSTANDARD2_1
+            arrayPool.Return(innerbuffer,true)
+            #else
+            ()
+            #endif
 
     }
 
