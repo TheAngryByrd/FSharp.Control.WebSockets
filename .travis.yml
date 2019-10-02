@@ -2,6 +2,9 @@ language: csharp
 sudo: required
 dist: xenial
 
+before_install: 
+    - sudo apt-get install -qq dotnet-sdk-2.2
+
 dotnet: 3.0.100
 mono:
   - latest # => "stable release"
