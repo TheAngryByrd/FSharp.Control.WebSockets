@@ -196,10 +196,10 @@ module WebSocket =
     ///
     let sendMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (readableStream : #IO.Stream)  = task {
         let buffer =
-            #if NETSTANDARD2_1
-            arrayPool.Rent(bufferSize)
-            #else
+            #if NETSTANDARD2_0 || NET461
             Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
             #endif
         let mutable moreToRead = true
         try
@@ -211,10 +211,10 @@ module WebSocket =
                     moreToRead <- false
                     do! send socket (ArraySegment(Array.empty)) messageType true cancellationToken
         finally
-            #if NETSTANDARD2_1
-            arrayPool.Return(buffer,true)
-            #else
+            #if NETSTANDARD2_0 || NET461
             ()
+            #else
+            arrayPool.Return(buffer,true)
             #endif
         }
 
@@ -266,10 +266,10 @@ module WebSocket =
     ///
     let receiveMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (cancellationToken : CancellationToken) (writeableStream : IO.Stream)  = task {
         let innerbuffer =
-            #if NETSTANDARD2_1
-            arrayPool.Rent(bufferSize)
-            #else
+            #if NETSTANDARD2_0 || NET461
             Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
             #endif
         let buffer = new ArraySegment<Byte>(innerbuffer)
         let mutable moreToRead = true
@@ -291,10 +291,10 @@ module WebSocket =
                         mainResult <- Stream writeableStream
             return mainResult
         finally
-            #if NETSTANDARD2_1
-            arrayPool.Return(innerbuffer,true)
-            #else
+            #if NETSTANDARD2_0 || NET461
             ()
+            #else
+            arrayPool.Return(innerbuffer,true)
             #endif
 
     }

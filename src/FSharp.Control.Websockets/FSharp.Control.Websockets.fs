@@ -226,10 +226,10 @@ module WebSocket =
     ///
     let sendMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (readableStream : #IO.Stream)  = async {
         let buffer =
-            #if NETSTANDARD2_1
-            arrayPool.Rent(bufferSize)
-            #else
+            #if NETSTANDARD2_0 || NET461
             Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
             #endif
 
         let rec sendMessage' () = async {
@@ -244,10 +244,10 @@ module WebSocket =
         try
             return! sendMessage'()
         finally
-            #if NETSTANDARD2_1
-            arrayPool.Return(buffer,true)
-            #else
+            #if NETSTANDARD2_0 || NET461
             ()
+            #else
+            arrayPool.Return(buffer,true)
             #endif
     }
 
@@ -296,10 +296,10 @@ module WebSocket =
     ///
     let receiveMessage (socket : WebSocket) (bufferSize : int) (messageType : WebSocketMessageType) (writeableStream : IO.Stream)  = async {
         let innerbuffer =
-            #if NETSTANDARD2_1
-            arrayPool.Rent(bufferSize)
-            #else
+            #if NETSTANDARD2_0 || NET461
             Array.create (bufferSize) Byte.MinValue
+            #else
+            arrayPool.Rent(bufferSize)
             #endif
         let buffer = new ArraySegment<Byte>(innerbuffer)
 
@@ -322,10 +322,10 @@ module WebSocket =
         try
             return! readTillEnd' ()
         finally
-            #if NETSTANDARD2_1
-            arrayPool.Return(innerbuffer,true)
-            #else
+            #if NETSTANDARD2_0 || NET461
             ()
+            #else
+            arrayPool.Return(innerbuffer,true)
             #endif
 
     }
