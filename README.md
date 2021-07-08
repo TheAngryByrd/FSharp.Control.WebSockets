@@ -40,68 +40,78 @@ FSharp.Control.Websockets.TPL | [![NuGet Badge](https://buildstats.info/nuget/FS
 
 ```fsharp
 open System
-open System.Net
 open System.Net.WebSockets
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 open FSharp.Control.Websockets
+open Microsoft.Extensions.Configuration
 
-let echoWebSocket (httpContext : HttpContext) (next : unit -> Async<unit>) = async {
-
+let echoWebSocket (httpContext: HttpContext) (next: unit -> Async<unit>) =
+  async {
     if httpContext.WebSockets.IsWebSocketRequest then
-        let! websocket  = httpContext.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
-        // Create a thread-safe WebSocket from an existing websocket
-        let threadSafeWebSocket = ThreadSafeWebSocket.createFromWebSocket websocket
-        while threadSafeWebSocket.State = WebSocketState.Open do
-            try
-                let! result =
-                     threadSafeWebSocket
-                    |> ThreadSafeWebSocket.receiveMessageAsUTF8
-                match result with
-                | Ok(WebSocket.ReceiveUTF8Result.String text) ->
-                    //Echo it back to the client
-                    do! WebSocket.sendMessageAsUTF8 text websocket
-                | Ok(WebSocket.ReceiveUTF8Result.StreamClosed (status, reason)) ->
-                    printfn "Socket closed %A - %s" status reason
-                | Error (ex) ->
-                    printfn "Receiving threw an exception %A" ex.SourceException
-            with e ->
-                printfn "%A" e
+      let! websocket =
+        httpContext.WebSockets.AcceptWebSocketAsync()
+        |> Async.AwaitTask
+      // Create a thread-safe WebSocket from an existing websocket
+      let threadSafeWebSocket =
+        ThreadSafeWebSocket.createFromWebSocket websocket
+
+      while threadSafeWebSocket.State = WebSocketState.Open do
+        try
+          let! result =
+            threadSafeWebSocket
+            |> ThreadSafeWebSocket.receiveMessageAsUTF8
+
+          match result with
+          | Ok (WebSocket.ReceiveUTF8Result.String text) ->
+              //Echo it back to the client
+              do! WebSocket.sendMessageAsUTF8 websocket (text)
+          | Ok (WebSocket.ReceiveUTF8Result.Closed (status, reason)) -> printfn "Socket closed %A - %s" status reason
+          | Error (ex) -> printfn "Receiving threw an exception %A" ex.SourceException
+        with e -> printfn "%A" e
 
     else
-        do! next()
-
-}
-
+      do! next ()
+  }
 
 //Convenience function for making middleware with F# asyncs and funcs
-let fuse (middlware : HttpContext -> (unit -> Async<unit>) -> Async<unit>) (app:IApplicationBuilder) =
-    app.Use(fun env next ->
-                middlware env (next.Invoke >> Async.AwaitTask)
-                |> Async.StartAsTask :> Task)
+let fuse (middlware: HttpContext -> (unit -> Async<unit>) -> Async<unit>) (app: IApplicationBuilder) =
+  app.Use
+    (fun env next ->
+      middlware env (next.Invoke >> Async.AwaitTask)
+      |> Async.StartAsTask
+      :> Task)
 
-let configureEchoServer  (appBuilder : IApplicationBuilder) =
-    appBuilder.UseWebSockets()
-    |> Server.fuse (echoWebSocket)
-    |> ignore
 
-let getKestrelServer configureServer uri = async {
-    let configBuilder = new ConfigurationBuilder()
-    let configBuilder = configBuilder.AddInMemoryCollection()
-    let config = configBuilder.Build()
-    config.["server.urls"] <- uri
-    let host = WebHostBuilder()
-                .UseConfiguration(config)
-                .UseKestrel()
-                .Configure(fun app -> configureServer app )
-                .Build()
+let configureEchoServer (appBuilder: IApplicationBuilder) =
+  appBuilder.UseWebSockets()
+  |> fuse (echoWebSocket)
+  |> ignore
 
-    do! host.StartAsync() |> Async.AwaitTask
-    return host
-}
+let getKestrelServer configureServer uri =
+  let configBuilder = new ConfigurationBuilder()
+  let configBuilder = configBuilder.AddInMemoryCollection()
+  let config = configBuilder.Build()
+  config.["server.urls"] <- uri
 
+  let host =
+    WebHostBuilder()
+      .UseConfiguration(config)
+      .UseKestrel()
+      .Configure(fun app -> configureServer app)
+      .Build()
+      .Start()
+
+  host
+
+[<EntryPoint>]
+let main argv =
+  getKestrelServer configureEchoServer "http://localhost:3000"
+  Console.ReadKey() |> ignore
+
+  0
 ```
 
 ---
