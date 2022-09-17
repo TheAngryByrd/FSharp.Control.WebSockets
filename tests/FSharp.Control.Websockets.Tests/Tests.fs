@@ -3,6 +3,7 @@ module Tests
 open Expecto
 open FSharp.Control.Websockets
 
+open Infrastructure
 open System
 open System.Net
 open System.Net.WebSockets
@@ -11,9 +12,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 
-open FSharp.Control.Websockets
 
-open Infrastructure
 open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.Configuration
 

@@ -34,12 +34,12 @@ module Server =
     // ))
 
     let ause (middlware : HttpContext -> (unit -> Async<unit>) -> Async<unit>) (app:IApplicationBuilder) =
-        app.Use(fun env next ->
+        app.Use(fun (env: HttpContext) (next : Func<Task>) ->
                     middlware env (next.Invoke >> Async.AwaitTask)
                     |> Async.StartAsTask :> Task)
 
     let tuse (middlware : HttpContext -> (unit -> Task) -> Task<unit>) (app:IApplicationBuilder) =
-        app.Use(fun env next ->
+        app.Use(fun (env: HttpContext) (next : Func<Task>) ->
                     middlware env (next.Invoke)
                     :> Task)
 

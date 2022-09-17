@@ -1,39 +1,54 @@
 source https://www.nuget.org/api/v2
 source https://api.nuget.org/v3/index.json
 storage: none
-clitool dotnet-mono 0.5.2
-clitool dotnet-sourcelink 2.8.1
-clitool dotnet-fantomas 2.8.0
-clitool dotnet-reportgenerator-cli 4.0.0-rc4
-nuget FSharp.Core 4.3.4
-nuget Expecto 8.7
-nuget SourceLink.Create.CommandLine 2.8.1 copy_local: true
-nuget YoloDev.Expecto.TestSdk 0.7.0
-nuget Microsoft.NET.Test.Sdk 15.7.2
-nuget altcover 4.0.603
-nuget System.Threading.Tasks.Dataflow
-nuget TaskBuilder.fs
+nuget FSharp.Core 6.0
+nuget Microsoft.SourceLink.GitHub 1.1.0 copy_local: true
+nuget Expecto 9.0.4
+nuget YoloDev.Expecto.TestSdk 0.12.12
+nuget Microsoft.NET.Test.Sdk 17.1.0-preview-20211109-03
+nuget altcover ~> 8.2.825
 nuget Microsoft.AspNetCore.TestHost
 nuget Microsoft.AspNetCore.WebSockets
 nuget Microsoft.AspNetCore.Server.Kestrel
 
+nuget System.Threading.Tasks.Dataflow
 nuget benchmarkdotnet
 nuget Microsoft.IO.RecyclableMemoryStream
+
 // [ FAKE GROUP ]
 group Build
-
     storage: none
     source https://www.nuget.org/api/v2
     source https://api.nuget.org/v3/index.json
-    nuget Fake.IO.FileSystem
-    nuget Fake.Core.Target
-    nuget Fake.Core.ReleaseNotes
-    nuget FAKE.Core.Environment
-    nuget Fake.DotNet.Cli
-    nuget FAKE.Core.Process
-    nuget Fake.DotNet.AssemblyInfoFile
-    nuget Fake.Tools.Git
-    nuget Fake.DotNet.Paket
-    nuget Fake.Api.GitHub
-    nuget Fake.BuildServer.AppVeyor
-    nuget Fake.BuildServer.Travis
+    nuget Fake.IO.FileSystem 5.20.4
+    nuget Fake.Core.Target 5.20.4
+    nuget Fake.Core.ReleaseNotes 5.20.4
+    nuget FAKE.Core.Environment 5.20.4
+    nuget Fake.DotNet.Cli 5.20.4
+    nuget FAKE.Core.Process 5.20.4
+    nuget Fake.DotNet.AssemblyInfoFile 5.20.4
+    nuget Fake.Tools.Git 5.20.4
+    nuget Fake.DotNet.Paket 5.20.4
+    nuget Fake.Api.GitHub 5.20.4
+    nuget Fake.BuildServer.GitHubActions 5.20.4
+    nuget Argu
+    nuget Octokit 0.48
+
+group Docs
+    storage: none
+    source https://www.nuget.org/api/v2
+    source https://api.nuget.org/v3/index.json
+    nuget Argu
+    nuget FSharp.Compiler.Service 34.1.0
+    nuget FSharp.Core ~> 4.6
+    nuget Fake.IO.FileSystem 5.20.4
+    nuget FAKE.Core.Environment 5.20.4
+    nuget Fake.DotNet.Cli 5.20.4
+    nuget FSharp.Formatting 4.0.0-rc1
+    nuget FSharp.Literate 4.0.0-rc1
+    nuget Fable.React
+
+group Analyzers
+  source https://www.nuget.org/api/v2
+  source https://api.nuget.org/v3/index.json
+  nuget BinaryDefense.FSharp.Analyzers.Hashing 0.2.2
