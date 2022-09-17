@@ -253,7 +253,7 @@ paket-files/
 
 TestResults.xml
 
-# Nuget packages distributables
+# NuGet packages distributables
 dist/
 
 # Ionide cache
@@ -262,8 +262,10 @@ dist/
 # Test coverage files
 coverage.xml
 coverage.*.xml
-lcov.info
 
 # Paket tool store
 .paket/.store
 .paket/paket
+
+.fake
+.ionide

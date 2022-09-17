@@ -26,7 +26,5 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="FSharp.Control.Websockets.fs" />
   </ItemGroup>
-  <!-- <Import Project="..\..\fsc.props" /> -->
-  <Import Project="..\..\netfx.props" />
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

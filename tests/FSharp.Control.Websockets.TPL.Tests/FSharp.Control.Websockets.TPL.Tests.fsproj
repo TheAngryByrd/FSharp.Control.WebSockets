@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>netcoreapp2.1;netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
+        <TargetFrameworks>net6.0</TargetFrameworks>
         <!-- <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion> -->
     </PropertyGroup>
     <ItemGroup>
@@ -16,7 +16,5 @@
     <ItemGroup>
         <ProjectReference Include="../../src/FSharp.Control.Websockets.TPL/FSharp.Control.Websockets.TPL.fsproj" />
     </ItemGroup>
-    <!-- <Import Project="..\..\fsc.props" /> -->
-    <Import Project="..\..\netfx.props" />
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
