@@ -18,18 +18,36 @@ open System.Threading
 open Infrastructure
 
 
-let testCaseTask name test = testCaseAsync name (test |> Async.AwaitTask)
-let ftestCaseTask name test = ftestCaseAsync name (test |> Async.AwaitTask)
-let ptestCaseTask name test = ptestCaseAsync name (test |> Async.AwaitTask)
+let testCaseTask name test =
+    testCaseAsync
+        name
+        (test
+         |> Async.AwaitTask)
+
+let ftestCaseTask name test =
+    ftestCaseAsync
+        name
+        (test
+         |> Async.AwaitTask)
+
+let ptestCaseTask name test =
+    ptestCaseAsync
+        name
+        (test
+         |> Async.AwaitTask)
 
 
-let echoWebSocket (httpContext : HttpContext) (next : unit -> Task) = task {
+let echoWebSocket (httpContext: HttpContext) (next: unit -> Task) = task {
 
     if httpContext.WebSockets.IsWebSocketRequest then
-        let! (websocket : WebSocket) = httpContext.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
+        let! (websocket: WebSocket) =
+            httpContext.WebSockets.AcceptWebSocketAsync()
+            |> Async.AwaitTask
+
         while websocket.State = WebSocketState.Open do
             try
-                let! result =WebSocket.receiveMessageAsUTF8 websocket CancellationToken.None
+                let! result = WebSocket.receiveMessageAsUTF8 websocket CancellationToken.None
+
                 match result with
                 | WebSocket.ReceiveUTF8Result.String text ->
                     do! WebSocket.sendMessageAsUTF8 websocket CancellationToken.None text
@@ -40,11 +58,11 @@ let echoWebSocket (httpContext : HttpContext) (next : unit -> Task) = task {
 
         ()
     else
-        do! next()
+        do! next ()
 
 }
 
-let configureEchoServer  (appBuilder : IApplicationBuilder) =
+let configureEchoServer (appBuilder: IApplicationBuilder) =
     appBuilder.UseWebSockets()
     |> Server.tuse (echoWebSocket)
     |> ignore
@@ -55,31 +73,78 @@ let configureEchoServer  (appBuilder : IApplicationBuilder) =
 let tests =
 
     testList "Tests" [
-        testCaseTask (sprintf "Full normal websocket interaction" ) <| task {
+        testCaseTask (sprintf "Full normal websocket interaction")
+        <| task {
             use! wss = Server.getServerAndWs configureEchoServer
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) wss.clientWebSocket
+
+            use clientWebSocket =
+                ThreadSafeWebSocket.createFromWebSocket
+                    (Dataflow.DataflowBlockOptions())
+                    wss.clientWebSocket
+
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
-            let! _ =  expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None
-            let! actual = ThreadSafeWebSocket.receiveMessageAsUTF8 clientWebSocket CancellationToken.None
-            Expect.equal actual (Ok <| WebSocket.ReceiveUTF8Result.String expected) "did not echo"
+
+            let! _ =
+                expected
+                |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None
+
+            let! actual =
+                ThreadSafeWebSocket.receiveMessageAsUTF8 clientWebSocket CancellationToken.None
+
+            Expect.equal
+                actual
+                (Ok
+                 <| WebSocket.ReceiveUTF8Result.String expected)
+                "did not echo"
 
 
-            let! _ = ThreadSafeWebSocket.close clientWebSocket WebSocketCloseStatus.NormalClosure "Closing" CancellationToken.None
+            let! _ =
+                ThreadSafeWebSocket.close
+                    clientWebSocket
+                    WebSocketCloseStatus.NormalClosure
+                    "Closing"
+                    CancellationToken.None
+
             Expect.equal clientWebSocket.State WebSocketState.Closed "Should be closed"
         }
 
-        testCaseTask (sprintf "Full close output websocket interaction" ) <| task {
+        testCaseTask (sprintf "Full close output websocket interaction")
+        <| task {
             use! wss = Server.getServerAndWs configureEchoServer
-            use clientWebSocket = ThreadSafeWebSocket.createFromWebSocket (Dataflow.DataflowBlockOptions()) wss.clientWebSocket
+
+            use clientWebSocket =
+                ThreadSafeWebSocket.createFromWebSocket
+                    (Dataflow.DataflowBlockOptions())
+                    wss.clientWebSocket
+
             Expect.equal clientWebSocket.State WebSocketState.Open "Should be open"
             let expected = Generator.genStr 2000
-            let! _ =  expected |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None
-            let! actual = ThreadSafeWebSocket.receiveMessageAsUTF8 clientWebSocket CancellationToken.None
-            Expect.equal actual (Ok <| WebSocket.ReceiveUTF8Result.String expected) "did not echo"
+
+            let! _ =
+                expected
+                |> ThreadSafeWebSocket.sendMessageAsUTF8 clientWebSocket CancellationToken.None
+
+            let! actual =
+                ThreadSafeWebSocket.receiveMessageAsUTF8 clientWebSocket CancellationToken.None
+
+            Expect.equal
+                actual
+                (Ok
+                 <| WebSocket.ReceiveUTF8Result.String expected)
+                "did not echo"
 
 
-            let! _ = ThreadSafeWebSocket.closeOutput clientWebSocket  WebSocketCloseStatus.NormalClosure "Closing" CancellationToken.None
-            Expect.equal clientWebSocket.State WebSocketState.CloseSent "Should have sent closed without waiting acknowledgement"
+            let! _ =
+                ThreadSafeWebSocket.closeOutput
+                    clientWebSocket
+                    WebSocketCloseStatus.NormalClosure
+                    "Closing"
+                    CancellationToken.None
+
+            Expect.equal
+                clientWebSocket.State
+                WebSocketState.CloseSent
+                "Should have sent closed without waiting acknowledgement"
         }
     ]
