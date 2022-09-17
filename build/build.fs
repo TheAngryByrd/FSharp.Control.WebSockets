@@ -715,7 +715,7 @@ let initTargets () =
 
 
     "DotnetRestore"
-        // ==> "CheckFormatCode"
+        ==> "CheckFormatCode"
         ==> "DotnetBuild"
         // ==> "FSharpAnalyzers"
         ==> "DotnetTest"
