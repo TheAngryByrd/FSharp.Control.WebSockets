@@ -269,3 +269,5 @@ coverage.*.xml
 
 .fake
 .ionide
+
+docs/coverage
