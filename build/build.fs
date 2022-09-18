@@ -30,7 +30,7 @@ let environVarAsBoolOrDefault varName defaultValue =
 //-----------------------------------------------------------------------------
 
 let productName = "FSharp.Control.WebSockets"
-let sln = __SOURCE_DIRECTORY__ </> ".." </> "FSharp.Control.WebSockets.sln"
+let sln = __SOURCE_DIRECTORY__ </> ".." </> "FSharp.Control.Websockets.sln"
 
 
 let srcCodeGlob =
