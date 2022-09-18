@@ -22,10 +22,10 @@ Uses [RecyclableMemoryStreamManager](https://www.philosophicalgeek.com/2015/02/0
 
 ## Builds
 
-MacOS/Linux | Windows
---- | ---
-[![Travis Badge](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets.svg?branch=master)](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets) | [![Build status](https://ci.appveyor.com/api/projects/status/github/TheAngryByrd/fsharp-control-websockets?svg=true)](https://ci.appveyor.com/project/TheAngryByrd/fsharp-control-websockets)
-[![Build History](https://buildstats.info/travisci/chart/TheAngryByrd/FSharp.Control.Websockets)](https://travis-ci.org/TheAngryByrd/FSharp.Control.Websockets/builds) | [![Build History](https://buildstats.info/appveyor/chart/TheAngryByrd/fsharp-control-websockets)](https://ci.appveyor.com/project/TheAngryByrd/fsharp-control-websockets)  
+GitHub Actions |
+:---: |
+[![GitHub Actions](https://github.com/TheAngryByrd/FSharp.Control.Websockets/workflows/Build%20master/badge.svg)](https://github.com/TheAngryByrd/FSharp.Control.Websockets/actions?query=branch%3Amaster) |
+[![Build History](https://buildstats.info/github/chart/TheAngryByrd/FSharp.Control.Websockets)](https://github.com/TheAngryByrd/FSharp.Control.Websockets/actions?query=branch%3Amaster) |
 
 
 ## Nuget 
