@@ -68,7 +68,6 @@ module WebSocket =
     open Stream
     open System
     open System.Net.WebSockets
-    open FSharp.Control.Tasks.V2
 
 #if NETSTANDARD2_1
     open System.Buffers
@@ -436,7 +435,6 @@ module ThreadSafeWebSocket =
     open Stream
     open System.Threading.Tasks
     open System.Threading.Tasks.Dataflow
-    open FSharp.Control.Tasks.V2
 
     type SendMessages =
         | Send of

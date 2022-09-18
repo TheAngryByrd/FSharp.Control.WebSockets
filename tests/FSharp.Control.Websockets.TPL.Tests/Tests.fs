@@ -2,7 +2,7 @@ module Tests
 
 open Expecto
 open FSharp.Control.Websockets.TPL
-open FSharp.Control.Tasks.V2
+open Infrastructure
 
 open System
 open System.Net
@@ -13,9 +13,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.Configuration
-open Infrastructure
 open System.Threading
-open Infrastructure
 
 
 let testCaseTask name test =
