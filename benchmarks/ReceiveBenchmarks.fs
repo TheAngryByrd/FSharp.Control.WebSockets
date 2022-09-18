@@ -9,7 +9,6 @@ module Setup =
     open System.Threading
     open System.Threading.Tasks
     open Microsoft.AspNetCore.Http
-    open FSharp.Control.Tasks.V2.ContextInsensitive
     open System.Net.WebSockets
     // open System.Memory
 
@@ -114,7 +113,6 @@ module UTF8Convertion =
 
     open FSharp.Control.Websockets
     open System.Net.WebSockets
-    open FSharp.Control.Tasks.V2.ContextInsensitive
     open System.Threading
     open System.Threading.Tasks
     open FSharp.Control.Websockets.Stream
@@ -186,7 +184,6 @@ module Receive =
 
     open FSharp.Control.Websockets
     open System.Net.WebSockets
-    open FSharp.Control.Tasks.V2.ContextInsensitive
     open System.Threading
     open System.Threading.Tasks
 
