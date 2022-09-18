@@ -3,21 +3,21 @@ namespace System
 open System.Reflection
 
 [<assembly: AssemblyTitleAttribute("FSharp.Control.Websockets.TPL")>]
-[<assembly: AssemblyProductAttribute("FSharp.Control.Websockets")>]
-[<assembly: AssemblyVersionAttribute("0.2.2")>]
-[<assembly: AssemblyMetadataAttribute("ReleaseDate","2019-10-02T00:00:00.0000000")>]
-[<assembly: AssemblyFileVersionAttribute("0.2.2")>]
-[<assembly: AssemblyInformationalVersionAttribute("0.2.2")>]
-[<assembly: AssemblyMetadataAttribute("ReleaseChannel","release")>]
-[<assembly: AssemblyMetadataAttribute("GitHash","38dcaf681a4c15bd3b76b1f679647b688564c26d")>]
+[<assembly: AssemblyProductAttribute("FSharp.Control.WebSockets")>]
+[<assembly: AssemblyVersionAttribute("0.2.3")>]
+[<assembly: AssemblyMetadataAttribute("ReleaseDate","2022-09-17T00:00:00.0000000-04:00")>]
+[<assembly: AssemblyFileVersionAttribute("0.2.3")>]
+[<assembly: AssemblyInformationalVersionAttribute("0.2.3")>]
+[<assembly: AssemblyMetadataAttribute("ReleaseChannel","beta")>]
+[<assembly: AssemblyMetadataAttribute("GitHash","c9ad097b9bde148b8beba0676a8bc6447c8e097e")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "FSharp.Control.Websockets.TPL"
-    let [<Literal>] AssemblyProduct = "FSharp.Control.Websockets"
-    let [<Literal>] AssemblyVersion = "0.2.2"
-    let [<Literal>] AssemblyMetadata_ReleaseDate = "2019-10-02T00:00:00.0000000"
-    let [<Literal>] AssemblyFileVersion = "0.2.2"
-    let [<Literal>] AssemblyInformationalVersion = "0.2.2"
-    let [<Literal>] AssemblyMetadata_ReleaseChannel = "release"
-    let [<Literal>] AssemblyMetadata_GitHash = "38dcaf681a4c15bd3b76b1f679647b688564c26d"
+    let [<Literal>] AssemblyProduct = "FSharp.Control.WebSockets"
+    let [<Literal>] AssemblyVersion = "0.2.3"
+    let [<Literal>] AssemblyMetadata_ReleaseDate = "2022-09-17T00:00:00.0000000-04:00"
+    let [<Literal>] AssemblyFileVersion = "0.2.3"
+    let [<Literal>] AssemblyInformationalVersion = "0.2.3"
+    let [<Literal>] AssemblyMetadata_ReleaseChannel = "beta"
+    let [<Literal>] AssemblyMetadata_GitHash = "c9ad097b9bde148b8beba0676a8bc6447c8e097e"
