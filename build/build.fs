@@ -92,10 +92,11 @@ let docsSiteBaseUrl = sprintf "https://%s.github.io/%s" gitOwner gitRepoName
 
 let disableCodeCoverage = environVarAsBoolOrDefault "DISABLE_COVERAGE" false
 
-let githubToken = Environment.environVarOrNone "GITHUB_TOKEN"
+let githubToken = lazy (Environment.environVarOrNone "GITHUB_TOKEN")
 
-
-let nugetToken = Environment.environVarOrNone "NUGET_TOKEN"
+let nugetToken =
+    lazy
+        (Environment.environVarOrNone "NUGET_TOKEN")
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -557,7 +558,7 @@ let publishToNuget _ =
             ToolType = ToolType.CreateLocalTool()
             PublishUrl = publishUrl
             WorkingDir = "dist"
-            ApiKey = match nugetToken with
+            ApiKey = match nugetToken.Value with
                      | Some s -> s
                      | _ -> c.ApiKey // assume paket-config was set properly
         }
@@ -587,7 +588,7 @@ let gitRelease _ =
 let githubRelease _ =
     allReleaseChecks ()
     let token =
-        match githubToken with
+        match githubToken.Value with
         | Some s -> s
         | _ -> failwith "please set the github_token environment variable to a github personal access token with repo access."
 
@@ -665,8 +666,8 @@ let initTargets () =
     //-----------------------------------------------------------------------------
     // Hide Secrets in Logger
     //-----------------------------------------------------------------------------
-    Option.iter(TraceSecrets.register "<GITHUB_TOKEN>" ) githubToken
-    Option.iter(TraceSecrets.register "<NUGET_TOKEN>") nugetToken
+    Option.iter(TraceSecrets.register "<GITHUB_TOKEN>" ) githubToken.Value
+    Option.iter(TraceSecrets.register "<NUGET_TOKEN>") nugetToken.Value
     //-----------------------------------------------------------------------------
     // Target Declaration
     //-----------------------------------------------------------------------------
