@@ -271,3 +271,6 @@ coverage.*.xml
 .ionide
 
 docs/coverage
+
+# Environment file
+.env

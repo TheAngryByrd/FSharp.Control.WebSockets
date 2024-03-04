@@ -10,6 +10,7 @@ open Fake.Core.TargetOperators
 open Fake.Api
 open Fake.BuildServer
 open Argu
+open BuildHelper
 
 let environVarAsBoolOrDefault varName defaultValue =
     let truthyConsts = [
@@ -30,36 +31,42 @@ let environVarAsBoolOrDefault varName defaultValue =
 //-----------------------------------------------------------------------------
 
 let productName = "FSharp.Control.WebSockets"
-let sln = __SOURCE_DIRECTORY__ </> ".." </> "FSharp.Control.Websockets.sln"
+
+let rootDir =
+    __SOURCE_DIRECTORY__
+    </> ".."
+
+
+let sln = rootDir </> "FSharp.Control.Websockets.sln"
 
 
 let srcCodeGlob =
-    !! (__SOURCE_DIRECTORY__ </> ".." </> "src/**/*.fs")
-    ++ (__SOURCE_DIRECTORY__ </> ".." </> "src/**/*.fsx")
-    -- (__SOURCE_DIRECTORY__ </> ".." </> "src/**/obj/**/*.fs")
+    !! (rootDir </> "src/**/*.fs")
+    ++ (rootDir </> "src/**/*.fsx")
+    -- (rootDir </> "src/**/obj/**/*.fs")
 
 let testsCodeGlob =
-    !! (__SOURCE_DIRECTORY__ </> ".." </> "tests/**/*.fs")
-    ++ (__SOURCE_DIRECTORY__ </> ".." </> "tests/**/*.fsx")
-    -- (__SOURCE_DIRECTORY__ </> ".." </> "tests/**/obj/**/*.fs")
+    !! (rootDir </> "tests/**/*.fs")
+    ++ (rootDir </> "tests/**/*.fsx")
+    -- (rootDir </> "tests/**/obj/**/*.fs")
 
-let srcGlob =__SOURCE_DIRECTORY__ </> ".." </> "src/**/*.??proj"
-let testsGlob = __SOURCE_DIRECTORY__ </> ".." </> "tests/**/*.??proj"
+let srcGlob =rootDir </> "src/**/*.??proj"
+let testsGlob = rootDir </> "tests/**/*.??proj"
 
 let srcAndTest =
     !! srcGlob
     ++ testsGlob
 
-let distDir = __SOURCE_DIRECTORY__ </> ".." </> "dist"
+let distDir = rootDir </> "dist"
 let distGlob = distDir </> "*.nupkg"
 
 let coverageThresholdPercent = 60
-let coverageReportDir =  __SOURCE_DIRECTORY__ </> ".." </> "docs" </> "coverage"
+let coverageReportDir =  rootDir </> "docs" </> "coverage"
 
 
-let docsDir = __SOURCE_DIRECTORY__ </> ".." </> "docs"
-let docsSrcDir = __SOURCE_DIRECTORY__ </> ".." </> "docsSrc"
-let docsToolDir = __SOURCE_DIRECTORY__ </> ".." </> "docsTool"
+let docsDir = rootDir </> "docs"
+let docsSrcDir = rootDir </> "docsSrc"
+let docsToolDir = rootDir </> "docsTool"
 
 let gitOwner = "TheAngryByrd"
 let gitRepoName = "FSharp.Control.WebSockets"
@@ -70,7 +77,7 @@ let releaseBranch = "master"
 
 let tagFromVersionNumber versionNumber = sprintf "v%s" versionNumber
 
-let changelogFilename = __SOURCE_DIRECTORY__ </> ".." </> "CHANGELOG.md"
+let changelogFilename = rootDir </> "CHANGELOG.md"
 let changelog = Fake.Core.Changelog.load changelogFilename
 let mutable latestEntry =
     if Seq.isEmpty changelog.Entries
@@ -404,7 +411,7 @@ let fsharpAnalyzers _ =
     |> Seq.iter(fun proj ->
         let args  =
             [
-                FSharpAnalyzers.Analyzers_Path (__SOURCE_DIRECTORY__ </> ".." </> "packages/analyzers")
+                FSharpAnalyzers.Analyzers_Path (rootDir </> "packages/analyzers")
                 FSharpAnalyzers.Arguments.Project proj
                 FSharpAnalyzers.Arguments.Fail_On_Warnings [
                     "BDH0002"
@@ -647,6 +654,7 @@ let releaseDocs ctx =
 
 
 let initTargets () =
+    DotEnv.load rootDir
     BuildServer.install [
         GitHubActions.Installer
     ]
