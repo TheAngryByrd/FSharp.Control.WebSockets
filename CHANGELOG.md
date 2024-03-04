@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2024-03-04
+
+### Changed
+- [Update Microsoft.IO.RecyclableStreams to v3](https://github.com/TheAngryByrd/FSharp.Control.WebSockets/pull/10) thanks @ntwilson
+
 ## [0.3.0-beta001] - 2024-03-04
 
 ### Changed
@@ -52,7 +57,8 @@ First release
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.3.0-beta001...HEAD
+[Unreleased]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.2.3...v0.3.0
 [0.3.0-beta001]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.2.3...v0.3.0-beta001
 [0.2.3]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.2.2...v0.2.3
 [0.2.3-beta001]: https://github.com/TheAngryByrd/FSharp.Control.WebSockets/compare/v0.2.2...v0.2.3-beta001
